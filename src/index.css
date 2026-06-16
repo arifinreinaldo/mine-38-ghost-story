@@ -1,0 +1,631 @@
+/* ── Palette: cold volcanic basalt + the ember of Mahameru's dawn plume ── */
+:root {
+  --basalt: #14171c;   /* volcanic rock base */
+  --ash: #1e232b;      /* panel surface */
+  --ash-hi: #262c36;   /* raised surface */
+  --indigo: #2a3142;   /* pre-dawn sky */
+  --mist: #8a97a6;     /* secondary text / kabut */
+  --mist-dim: #5a6470;
+  --bone: #e8e6df;     /* primary text, edelweiss */
+  --ember: #c8642a;    /* sulfur-dawn plume accent */
+  --ember-soft: #e08a4d;
+  --blood: #9a3030;    /* the accusation */
+  --line: rgba(138, 151, 166, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  background: var(--basalt);
+  color: var(--bone);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.screen {
+  min-height: 100vh;
+  animation: fade 0.5s ease;
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+.eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.eyebrow::before {
+  content: '●  ';
+  color: var(--ember);
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+}
+
+p {
+  color: #cdd2d8;
+}
+.mist {
+  color: var(--mist);
+}
+.mono {
+  font-family: 'Space Mono', monospace;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--ember);
+  background: var(--ember);
+  color: #1a1208;
+  padding: 0.85em 1.4em;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+.btn:hover {
+  background: var(--ember-soft);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--bone);
+  border-color: var(--line);
+}
+.btn-ghost:hover {
+  background: var(--ash);
+  border-color: var(--mist-dim);
+}
+.btn-blood {
+  background: var(--blood);
+  border-color: var(--blood);
+  color: #f4e6e6;
+}
+.btn-blood:hover {
+  background: #b13a3a;
+}
+.btn:disabled:hover {
+  transform: none;
+}
+.btn:focus-visible,
+.seg button:focus-visible,
+.ev:focus-visible,
+.q-btn:focus-visible,
+.suspicion-toggle:focus-visible,
+.suspect-pick:focus-visible {
+  outline: 2px solid var(--ember-soft);
+  outline-offset: 3px;
+}
+
+/* ════════ COVER ════════ */
+.cover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  animation: fade 0.6s ease;
+}
+.cover-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(120% 80% at 50% 118%, rgba(200, 100, 42, 0.4), transparent 55%),
+    linear-gradient(180deg, #0c0e12 0%, var(--indigo) 70%, #1a1d24 100%);
+}
+/* Signature: Mahameru's smoke plume catching first light, swelling slowly */
+.plume {
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: 46%;
+  height: 62%;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    50% 60% at 50% 100%,
+    rgba(224, 138, 77, 0.55),
+    rgba(200, 100, 42, 0.12) 45%,
+    transparent 70%
+  );
+  filter: blur(14px);
+  animation: plume 11s ease-in-out infinite;
+}
+@keyframes plume {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translateX(-50%) translateY(6%) scaleX(0.9);
+  }
+  45% {
+    opacity: 0.8;
+    transform: translateX(-50%) translateY(-4%) scaleX(1.05);
+  }
+}
+.cover-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+  background-image: radial-gradient(1px 1px at 20% 24%, #fff, transparent),
+    radial-gradient(1px 1px at 68% 16%, #fff, transparent),
+    radial-gradient(1px 1px at 84% 32%, #cdd, transparent),
+    radial-gradient(1px 1px at 12% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 44% 8%, #bcd, transparent);
+}
+.cover-inner {
+  position: relative;
+  z-index: 2;
+  padding: 0 22px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.cover-inner h1 {
+  font-size: clamp(3rem, 13vw, 6.2rem);
+  margin: 0.28em 0 0.35em;
+}
+.cover-lead {
+  font-size: 1.1rem;
+  max-width: 34ch;
+  margin-bottom: 2.2em;
+  color: #d8dce1;
+}
+
+/* ════════ shared section bits ════════ */
+.pad {
+  padding: 64px 0 96px;
+}
+.section-head {
+  margin-bottom: 2.4em;
+}
+.section-head h2 {
+  font-size: clamp(2rem, 7vw, 3rem);
+  margin: 0.2em 0;
+}
+
+.card {
+  background: var(--ash);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 22px;
+}
+
+.dossier-row {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin: 1.4em 0;
+}
+.label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+.avatar {
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  background: var(--ash-hi);
+  border: 1px solid var(--line);
+  color: var(--bone);
+}
+
+/* ── Investigation nav ── */
+.seg {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  background: rgba(20, 23, 28, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  margin: 0 -22px 2.2em;
+  padding: 0 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.seg button {
+  flex: 0 0 auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--mist);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px 14px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.seg button[aria-selected='true'] {
+  color: var(--bone);
+  border-bottom-color: var(--ember);
+}
+
+.tabpanel {
+  animation: fade 0.35s ease;
+}
+
+/* ── Evidence ── */
+.ev {
+  width: 100%;
+  text-align: left;
+  background: var(--ash);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  color: inherit;
+  display: block;
+}
+.ev:hover {
+  border-color: var(--mist-dim);
+  background: var(--ash-hi);
+}
+.ev-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.ev-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  color: var(--ember);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ev h3 {
+  font-size: 1.12rem;
+  margin: 0.1em 0;
+}
+.ev-sum {
+  color: var(--mist);
+  font-size: 0.94rem;
+}
+.ev-detail {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  animation: fade 0.3s ease;
+}
+.ev[aria-expanded='true'] {
+  border-color: var(--ember);
+}
+.ev .chev {
+  color: var(--mist-dim);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+}
+.examined-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ember);
+  margin-left: 8px;
+  vertical-align: middle;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.ev.seen .examined-dot {
+  opacity: 1;
+}
+
+/* ── Suspects ── */
+.suspect {
+  margin-bottom: 16px;
+}
+.suspect .head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.suspect .name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+.suspect .role {
+  color: var(--mist);
+  font-size: 0.9rem;
+}
+.stmt {
+  margin-top: 14px;
+  font-style: italic;
+  color: #d8dce1;
+}
+.suspect dl {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  font-size: 0.95rem;
+}
+.suspect dt {
+  color: var(--mist);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-top: 0.25em;
+}
+.suspect dd {
+  color: #d2d7dd;
+}
+
+/* ── Interrogation ── */
+.interrogation {
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.interrogation .label {
+  display: block;
+  margin-bottom: 4px;
+}
+.q-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  background: var(--ash-hi);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--bone);
+  font-family: inherit;
+  font-size: 0.92rem;
+  padding: 11px 14px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.q-btn:hover {
+  border-color: var(--mist-dim);
+}
+.q-btn[aria-expanded='true'] {
+  border-color: var(--ember);
+}
+.q-btn .chev {
+  color: var(--mist-dim);
+  font-family: 'Space Mono', monospace;
+}
+.q-ans {
+  font-style: italic;
+  color: var(--mist);
+  font-size: 0.92rem;
+  padding: 10px 14px 2px;
+  animation: fade 0.3s ease;
+}
+
+/* ── Notebook (suspicion toggle + flag) ── */
+.suspicion-toggle {
+  margin-top: 16px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--mist);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.suspicion-toggle:hover {
+  border-color: var(--mist-dim);
+  color: var(--bone);
+}
+.suspicion-toggle.on {
+  border-color: var(--blood);
+  color: #e0b3b3;
+  background: rgba(154, 48, 48, 0.12);
+}
+.flag {
+  display: inline-block;
+  margin-left: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e0b3b3;
+  background: rgba(154, 48, 48, 0.18);
+  border: 1px solid rgba(154, 48, 48, 0.5);
+  border-radius: 2px;
+  padding: 2px 7px;
+  vertical-align: middle;
+}
+
+/* ── Timeline ── */
+.tl {
+  list-style: none;
+  border-left: 1px solid var(--line);
+  margin-left: 6px;
+  padding-left: 0;
+}
+.tl li {
+  position: relative;
+  padding: 0 0 22px 26px;
+}
+.tl li::before {
+  content: '';
+  position: absolute;
+  left: -4.5px;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mist-dim);
+}
+.tl li.key::before {
+  background: var(--ember);
+}
+.tl time {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--ember);
+  letter-spacing: 0.06em;
+}
+.tl p {
+  font-size: 0.95rem;
+  margin-top: 2px;
+}
+
+/* ── Accuse ── */
+.suspect-pick {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: var(--ash);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  color: inherit;
+  transition: border-color 0.2s ease;
+}
+.suspect-pick:hover {
+  border-color: var(--mist-dim);
+}
+.suspect-pick[aria-pressed='true'] {
+  border-color: var(--blood);
+  background: rgba(154, 48, 48, 0.12);
+}
+.suspect-pick .name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.12rem;
+}
+.suspect-pick .role {
+  color: var(--mist);
+  font-size: 0.85rem;
+}
+
+/* ── Reveal ── */
+.verdict {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 9vw, 4rem);
+  line-height: 1;
+  margin: 0.1em 0 0.3em;
+}
+.verdict.right {
+  color: var(--ember-soft);
+}
+.verdict.wrong {
+  color: var(--blood);
+}
+.solution h3 {
+  font-size: 1.2rem;
+  margin: 1.6em 0 0.4em;
+  color: var(--bone);
+}
+.solution p {
+  margin-bottom: 0.8em;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 2.4em;
+}
+.progress {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--mist);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.4em;
+}
+.gate-msg {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--mist);
+  margin-top: 10px;
+  letter-spacing: 0.04em;
+}
+
+hr.rule {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.4em 0;
+}
+
+@media (max-width: 520px) {
+  .suspect dl {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+  .suspect dt {
+    padding-top: 0.6em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plume {
+    animation: none;
+    opacity: 0.5;
+  }
+  .screen,
+  .cover,
+  .tabpanel,
+  .ev-detail,
+  .q-ans {
+    animation: none;
+  }
+}

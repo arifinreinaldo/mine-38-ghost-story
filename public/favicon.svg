@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Maut di Mahameru">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3142"/>
+      <stop offset="100%" stop-color="#14171c"/>
+    </linearGradient>
+    <radialGradient id="dawn" cx="50%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="#e08a4d"/>
+      <stop offset="45%" stop-color="#c8642a"/>
+      <stop offset="100%" stop-color="#c8642a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#sky)"/>
+  <rect width="64" height="64" rx="14" fill="url(#dawn)"/>
+  <path d="M-4 66 L16 38 L30 55 L46 35 L68 66 Z" fill="#222a37"/>
+  <path d="M-4 66 L26 23 L40 42 L50 33 L68 66 Z" fill="#13161b"/>
+  <path d="M26 23 L21.2 30 L31 30 Z" fill="#e8e6df"/>
+  <path d="M26 22 q7 -5 3.5 -12 q6 4.5 1.5 11" fill="none" stroke="#e08a4d" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+</svg>
