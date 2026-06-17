@@ -1,37 +1,28 @@
-export default function Briefing({ go }) {
+import { SceneArt } from './Icons'
+
+export default function Briefing({ caseData, go }) {
+  const { briefing } = caseData
   return (
     <section className="screen" aria-label="Pengarahan">
       <div className="wrap pad">
+        <button className="link-back" onClick={() => go('home')}>
+          ← Beranda
+        </button>
+        <SceneArt className="scene-band" variant={caseData.scene} />
         <div className="section-head">
-          <span className="eyebrow">Pengarahan</span>
+          <span className="eyebrow">Pengarahan · {caseData.code}</span>
           <h2>Apa yang kita tahu</h2>
         </div>
 
-        <p>
-          Tiga hari lalu, lima orang mendaki Gunung Semeru. Pada hari ketiga,
-          dini hari, sebagian dari mereka melakukan <em>summit attack</em> dari
-          pos terakhir, Kalimati, menembus dingin dan gelap menuju puncak
-          Mahameru.
-        </p>
-        <p style={{ marginTop: '1em' }}>
-          Hanya satu yang tidak kembali. <strong>Arya Wibowo</strong>, 34 tahun
-          — pendaki berpengalaman sekaligus pembuat konten dengan ratusan ribu
-          pengikut — ditemukan tergeletak di lereng pasir curam, sekitar dua
-          ratus meter di bawah puncak. Tim SAR menyimpulkan ia tergelincir dan
-          jatuh. Kasus ditutup.
-        </p>
-        <p style={{ marginTop: '1em' }}>
-          Kakak korban menolak kesimpulan itu. Arya bukan pendaki sembarangan.
-          Ia memanggil Anda.
-        </p>
+        {briefing.paras.map((p, i) => (
+          <p key={i} style={i ? { marginTop: '1em' } : undefined}>
+            {p}
+          </p>
+        ))}
 
         <div className="card" style={{ marginTop: '2.4em' }}>
-          <span className="label">Tugas Anda</span>
-          <p style={{ marginTop: '.6em', color: '#D8DCE1' }}>
-            Periksa setiap bukti. Interogasi keempat orang yang ada di gunung
-            itu. Lalu ajukan satu tuduhan: jika ini memang pembunuhan, siapa
-            pelakunya?
-          </p>
+          <span className="label">{briefing.taskTitle}</span>
+          <p style={{ marginTop: '.6em', color: '#D8DCE1' }}>{briefing.task}</p>
         </div>
 
         <div className="actions">

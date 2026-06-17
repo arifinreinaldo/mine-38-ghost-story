@@ -3,7 +3,18 @@
 Misteri pembunuhan interaktif berlatar pendakian Gunung Semeru. Pemain memeriksa
 bukti, menginterogasi saksi, menandai tersangka, lalu mengajukan satu tuduhan.
 
-Built with **Vite + React**. Single self-contained case, no backend.
+Built with **Vite + React**. Mesin kasus **berbasis-data (multi-kasus)**; sample
+gratis tanpa backend.
+
+## Kasus
+
+| Kasus | Tingkat | Akses |
+|---|---|---|
+| **Maut di Mahameru** — pendaki tewas di Semeru | Sedang | Gratis (sample) |
+| **Maut di Wisma Kencana** — "sang dermawan" tewas di pesta megahnya | Sulit | Perlu registrasi |
+
+Kasus kedua lebih sulit: 5 tersangka, 10 bukti, dan tiga lapis kejutan
+(harta palsu → perampokan rekayasa → pengkhianatan partner).
 
 ## Fitur
 
@@ -86,39 +97,46 @@ supabase/schema.sql     # tabel + RLS (Fase 1 login, Fase 2 paywall dikomentari)
 public/                 # favicon (belati+darah), ikon PWA, manifest, sw.js, og.png
 src/
 ├─ main.jsx             # entry React + AuthProvider + registrasi service worker
-├─ App.jsx              # state machine layar + state game + simpan progres
-├─ data.js              # konten kasus gratis: bukti, tersangka, twist, solusi, peringkat
-├─ stories.js           # katalog kasus (gratis vs terkunci)
+├─ App.jsx              # orkestrasi tampilan: beranda / auth / next / play
 ├─ index.css            # design tokens + styling
+├─ cases/
+│  ├─ index.js          # registry kasus (freeCase, gatedCase, getCase)
+│  ├─ mahameru.js       # Kasus 1 (gratis)
+│  └─ kencana.js        # Kasus 2 (terkunci, lebih sulit)
 ├─ lib/
 │  ├─ supabase.js       # client Supabase (lazy, opsional)
-│  └─ content.js        # ambil konten kasus terkunci (RLS-gated)
+│  ├─ content.js        # ambil konten kasus terkunci (RLS-gated, untuk paywall)
+│  ├─ ranks.js          # peringkat detektif (dipakai lintas kasus)
+│  ├─ save.js           # simpan progres per-kasus
+│  └─ intent.js         # ingat tujuan untuk lanjut otomatis setelah login
 ├─ auth/
 │  └─ AuthProvider.jsx  # sesi + signIn/signUp/magic-link/signOut
+├─ pwa/                 # install prompt + status standalone/offline
 └─ components/
-   ├─ Icons.jsx         # ikon bukti, medali siluet, ilustrasi TKP
-   ├─ Cover.jsx         # + kontrol akun + teaser kasus terkunci
+   ├─ Icons.jsx         # ikon bukti, medali siluet, ilustrasi TKP (mountain/estate)
+   ├─ Cover.jsx         # beranda: hero + kontrol akun + teaser kasus terkunci
+   ├─ CasePlayer.jsx    # menjalankan satu kasus (state + save per-kasus)
    ├─ Auth.jsx          # layar masuk/daftar
    ├─ NextCase.jsx      # kasus berikutnya (gerbang registrasi)
-   ├─ Briefing.jsx
-   ├─ Investigation.jsx # tab, bukti (gated), interogasi, notebook
-   ├─ Accuse.jsx        # pilih tersangka + susun pembuktian (deduksi)
-   └─ Reveal.jsx        # vonis, peringkat, bantahan per-tersangka, bagikan
+   ├─ Briefing.jsx · Investigation.jsx · Accuse.jsx · Reveal.jsx
+   └─ PwaBar.jsx        # notifikasi luring
 ```
 
 ## Catatan
 
 Seluruh konten kasus (latar, karakter, alur) orisinal.
 
-Untuk menambah kasus baru, duplikasi struktur di `src/data.js` (lihat `SOLUTION`,
-`evidence` dengan `locked`/`requires`/`unlocks`, `rebuttals`, dan `RANKS`).
+Untuk menambah kasus baru: buat berkas di `src/cases/<id>.js` (ikuti bentuk
+`mahameru.js` — `evidence` dengan `locked`/`requires`/`unlocks`, `suspects`,
+`solution`, `reveal`), lalu daftarkan di `src/cases/index.js`.
 
 ### Rencana (roadmap)
 
-- **Fase 1 (selesai):** sample gratis + gerbang registrasi (Supabase Auth) untuk
-  kasus berikutnya.
-- **Fase 2 (paywall):** aktifkan tabel `entitlements` + RLS (sudah disiapkan di
-  `supabase/schema.sql`) dan webhook Stripe; konten kasus diambil dari
-  `story_content`. Hanya pengguna yang membeli yang bisa membaca.
+- **Fase 1 (selesai):** dua kasus — sample gratis + kasus kedua di balik gerbang
+  registrasi (Supabase Auth). Kasus kedua kini masih ter-bundle (gerbang login
+  di sisi klien) karena belum berbayar.
+- **Fase 2 (paywall):** pindahkan konten kasus berbayar ke tabel `story_content`
+  Supabase (jangan di-bundle), aktifkan `entitlements` + RLS (sudah disiapkan di
+  `supabase/schema.sql`) dan webhook Stripe. Hanya pembeli yang bisa membaca.
 - **Fase 3 (opsional):** RevenueCat untuk entitlement lintas-platform bila
   merilis aplikasi mobile.

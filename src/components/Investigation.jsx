@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { suspects, timeline } from '../data'
 import { EvidenceIcon, Silhouette, SceneArt } from './Icons'
 
 const TABS = [
@@ -122,6 +121,7 @@ function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion, examin
 }
 
 export default function Investigation({
+  caseData,
   visibleEvidence,
   examined,
   examineEvidence,
@@ -133,6 +133,7 @@ export default function Investigation({
   go,
 }) {
   const [tab, setTab] = useState('korban')
+  const { suspects, timeline, victim } = caseData
 
   const interrogatedCount = suspects.filter(
     (s) => (interrogated[s.id] || []).length > 0
@@ -142,6 +143,9 @@ export default function Investigation({
   return (
     <section className="screen" aria-label="Investigasi">
       <div className="wrap pad">
+        <button className="link-back" onClick={() => go('home')}>
+          ← Beranda
+        </button>
         <div className="seg" role="tablist" aria-label="Bagian berkas">
           {TABS.map((t) => (
             <button
@@ -157,31 +161,25 @@ export default function Investigation({
 
         {tab === 'korban' && (
           <div className="tabpanel">
-            <SceneArt className="scene-band" />
+            <SceneArt className="scene-band" variant={caseData.scene} />
             <span className="eyebrow">Korban</span>
             <div className="dossier-row">
               <div className="avatar">
                 <Silhouette />
-                <span>AW</span>
+                <span>{victim.init}</span>
               </div>
               <div>
-                <h3 style={{ fontSize: '1.4rem' }}>Arya Wibowo</h3>
+                <h3 style={{ fontSize: '1.4rem' }}>{victim.name}</h3>
                 <span className="mist mono" style={{ fontSize: '.82rem' }}>
-                  34 tahun · pendaki & content creator
+                  {victim.meta}
                 </span>
               </div>
             </div>
-            <p>
-              Punya 490 ribu pengikut dan reputasi sebagai pendaki teknis yang
-              teliti — orang yang memeriksa peralatannya dua kali sebelum
-              berangkat. Bersama Dimas Pratama ia mendirikan merek perlengkapan
-              gunung <em>Rimbawan Gear</em>.
-            </p>
-            <p style={{ marginTop: '1em' }}>
-              Ditemukan pukul 04.40 di lereng pasir di atas Kelik, headlamp
-              dalam keadaan mati. Tidak ada luka selain akibat jatuh. Tim SAR
-              mencatat: "tergelincir di medan pasir gelap".
-            </p>
+            {victim.paras.map((p, i) => (
+              <p key={i} style={i ? { marginTop: '1em' } : undefined}>
+                {p}
+              </p>
+            ))}
           </div>
         )}
 
@@ -222,7 +220,7 @@ export default function Investigation({
 
         {tab === 'linimasa' && (
           <div className="tabpanel">
-            <span className="eyebrow">Linimasa — malam summit attack</span>
+            <span className="eyebrow">Linimasa</span>
             <ul className="tl" style={{ marginTop: '1.6em' }}>
               {timeline.map((e, i) => (
                 <li key={i} className={e.key ? 'key' : ''}>

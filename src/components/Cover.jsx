@@ -1,6 +1,7 @@
 import { useAuth } from '../auth/AuthProvider'
 import { usePwa } from '../pwa/usePwa'
-import { nextStory } from '../stories'
+import { freeCase, gatedCase } from '../cases'
+import { hasProgress, clearSave } from '../lib/save'
 
 function Account({ go }) {
   const { configured, user, signOut } = useAuth()
@@ -19,8 +20,15 @@ function Account({ go }) {
   )
 }
 
-export default function Cover({ go, hasProgress, restart }) {
+export default function Cover({ go, play }) {
   const { canInstall, standalone, promptInstall } = usePwa()
+  const resumable = hasProgress(freeCase.id)
+
+  const restart = () => {
+    clearSave(freeCase.id)
+    play(freeCase.id)
+  }
+
   return (
     <section className="cover" aria-label="Sampul kasus">
       <div className="cover-sky" />
@@ -28,18 +36,15 @@ export default function Cover({ go, hasProgress, restart }) {
       <div className="plume" />
       <Account go={go} />
       <div className="cover-inner">
-        <span className="eyebrow">Berkas Kasus · SM-2406 · Gunung Semeru</span>
-        <h1>
-          Maut di<br />Mahameru
-        </h1>
-        <p className="cover-lead">
-          Subuh, pukul 04.40. Seorang pendaki ditemukan tewas di pasir menjelang
-          puncak. Polisi menutup kasusnya sebagai kecelakaan. Keluarganya tidak
-          percaya.
-        </p>
-        {hasProgress ? (
+        <span className="eyebrow">
+          Berkas Kasus · {freeCase.code} · {freeCase.location}
+        </span>
+        <h1>{freeCase.title}</h1>
+        <p className="cover-lead">{freeCase.cover.lead}</p>
+
+        {resumable ? (
           <div className="actions" style={{ marginTop: 0 }}>
-            <button className="btn" onClick={() => go('investigation')}>
+            <button className="btn" onClick={() => play(freeCase.id)}>
               Lanjutkan investigasi →
             </button>
             <button className="btn btn-ghost" onClick={restart}>
@@ -47,7 +52,7 @@ export default function Cover({ go, hasProgress, restart }) {
             </button>
           </div>
         ) : (
-          <button className="btn" onClick={() => go('briefing')}>
+          <button className="btn" onClick={() => play(freeCase.id)}>
             Buka Berkas →
           </button>
         )}
@@ -55,8 +60,10 @@ export default function Cover({ go, hasProgress, restart }) {
         <button className="next-teaser" onClick={() => go('next')}>
           <span className="lock-ic" aria-hidden="true">🔒</span>
           <span>
-            <span className="next-label">Kasus berikutnya</span>
-            <span className="next-title">{nextStory.title}</span>
+            <span className="next-label">
+              Kasus berikutnya · {gatedCase.difficulty}
+            </span>
+            <span className="next-title">{gatedCase.title}</span>
           </span>
           <span className="next-arrow">→</span>
         </button>

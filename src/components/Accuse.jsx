@@ -1,4 +1,3 @@
-import { suspects, evidence } from '../data'
 import { Silhouette } from './Icons'
 
 const SLOTS = [
@@ -8,6 +7,7 @@ const SLOTS = [
 ]
 
 export default function Accuse({
+  caseData,
   accused,
   setAccused,
   suspicions,
@@ -17,7 +17,7 @@ export default function Accuse({
   go,
   confirm,
 }) {
-  const options = evidence.filter((e) => examined.includes(e.id))
+  const options = caseData.evidence.filter((e) => examined.includes(e.id))
   const proofComplete = SLOTS.every((s) => proof[s.key])
   const ready = accused && proofComplete
   const setSlot = (k, v) => setProof({ ...proof, [k]: v })
@@ -35,7 +35,7 @@ export default function Accuse({
         </p>
 
         <div>
-          {suspects.map((s) => (
+          {caseData.suspects.map((s) => (
             <button
               key={s.id}
               className="suspect-pick"

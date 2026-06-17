@@ -1,23 +1,10 @@
-import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthProvider'
-import { fetchStoryContent } from '../lib/content'
 import { setIntent } from '../lib/intent'
-import { nextStory } from '../stories'
+import { gatedCase } from '../cases'
 import { SceneArt } from './Icons'
 
-export default function NextCase({ go }) {
+export default function NextCase({ go, play }) {
   const { configured, user, loading } = useAuth()
-  const [content, setContent] = useState(null)
-
-  useEffect(() => {
-    let active = true
-    if (user) {
-      fetchStoryContent(nextStory.id).then((c) => active && setContent(c))
-    }
-    return () => {
-      active = false
-    }
-  }, [user])
 
   let body
   if (loading) {
@@ -46,20 +33,17 @@ export default function NextCase({ go }) {
         </button>
       </div>
     )
-  } else if (content) {
-    body = (
-      <div className="card lock-card">
-        <p>Kasus siap dimainkan. (Pemutar kasus berikutnya menyusul.)</p>
-      </div>
-    )
   } else {
     body = (
       <div className="card lock-card">
-        <span className="label">Kamu sudah terdaftar ✓</span>
-        <p style={{ marginTop: '.6em' }}>
-          Kasus berikutnya belum dipublikasikan. Akunmu akan langsung bisa
-          membukanya begitu rilis.
+        <span className="label">Akun terverifikasi ✓ · Tingkat {gatedCase.difficulty}</span>
+        <p style={{ margin: '.6em 0 1.2em' }}>
+          Kasus terbuka untukmu. Lebih banyak tersangka, lebih banyak bukti, dan
+          jebakan yang lebih licik dari kasus pertama.
         </p>
+        <button className="btn btn-blood" onClick={() => play(gatedCase.id)}>
+          Mulai Kasus →
+        </button>
       </div>
     )
   }
@@ -67,16 +51,16 @@ export default function NextCase({ go }) {
   return (
     <section className="screen" aria-label="Kasus berikutnya">
       <div className="wrap pad">
-        <SceneArt className="scene-band" />
-        <button className="link-back" onClick={() => go('cover')}>
-          ← Kembali
+        <SceneArt className="scene-band" variant={gatedCase.scene} />
+        <button className="link-back" onClick={() => go('home')}>
+          ← Beranda
         </button>
         <div className="section-head">
-          <span className="eyebrow">Berkas Terkunci</span>
-          <h2>{nextStory.title}</h2>
+          <span className="eyebrow">Berkas Terkunci · {gatedCase.code}</span>
+          <h2>{gatedCase.title}</h2>
         </div>
         <p className="mist" style={{ marginBottom: '2em' }}>
-          {nextStory.blurb}
+          {gatedCase.blurb}
         </p>
         {body}
       </div>
