@@ -57,12 +57,15 @@ di-*lazy load* — bundel sample tetap ramping.
 Mengaktifkan registrasi (Fase 1 — gerbang login untuk kasus berikutnya):
 
 1. Buat proyek di [supabase.com](https://supabase.com).
-2. Set env (lokal di `.env`, di Vercel di **Project → Settings → Environment Variables**):
+2. Set env (lokal di `.env`, di Vercel di **Project → Settings → Environment Variables**)
+   — pakai **publishable key** (bukan anon lama):
    ```
    VITE_SUPABASE_URL=...
-   VITE_SUPABASE_ANON_KEY=...
+   VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
    ```
-   (Supabase → **Project Settings → API**.)
+   (Supabase → **Project Settings → API Keys**.) **Secret key** (`sb_secret_...`)
+   hanya untuk server (Fase 2 / webhook Stripe) — jangan diberi prefix `VITE_`,
+   jangan di-commit.
 3. Jalankan `supabase/schema.sql` di **SQL Editor** Supabase.
 4. **Authentication → Providers → Email**: aktifkan. Untuk uji cepat, matikan
    sementara "Confirm email" agar sign up langsung bisa login.

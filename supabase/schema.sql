@@ -54,7 +54,7 @@ create policy "content for signed-in users"
 --   using (user_id = auth.uid());
 --
 -- -- Entitlements are written ONLY by the server (Stripe/RevenueCat webhook using
--- -- the service-role key), so no insert/update policy is granted to clients.
+-- -- the SECRET key sb_secret_...), so no insert/update policy is granted to clients.
 --
 -- -- Replace the Phase 1 content policy with an entitlement-gated one:
 -- drop policy if exists "content for signed-in users" on public.story_content;

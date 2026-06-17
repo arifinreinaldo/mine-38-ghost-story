@@ -3,9 +3,9 @@
 // and only loads when auth/gated features are actually used.
 
 const url = import.meta.env.VITE_SUPABASE_URL
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 
-export const isSupabaseConfigured = Boolean(url && anonKey)
+export const isSupabaseConfigured = Boolean(url && publishableKey)
 
 let clientPromise = null
 
@@ -13,7 +13,7 @@ export function getSupabase() {
   if (!isSupabaseConfigured) return Promise.resolve(null)
   if (!clientPromise) {
     clientPromise = import('@supabase/supabase-js').then(({ createClient }) =>
-      createClient(url, anonKey)
+      createClient(url, publishableKey)
     )
   }
   return clientPromise
