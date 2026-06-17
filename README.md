@@ -5,6 +5,18 @@ bukti, menginterogasi saksi, menandai tersangka, lalu mengajukan satu tuduhan.
 
 Built with **Vite + React**. Single self-contained case, no backend.
 
+## Fitur
+
+- **Investigasi**: bukti dengan ikon per jenis, interogasi, linimasa, notebook.
+- **Petunjuk berlapis**: sebagian pertanyaan interogasi baru terbuka setelah
+  bukti terkait ditemukan; satu bukti kunci (twist) tersembunyi sampai dipicu.
+- **Jebakan (red herring)**: satu bukti sengaja memberatkan tersangka yang salah.
+- **Deduksi**: untuk menuduh, pemain menyusun pembuktian — memilih bukti untuk
+  **Motif · Cara · Kesempatan**, bukan sekadar menebak nama.
+- **Peringkat detektif** + **hasil yang bisa dibagikan** (Web Share/clipboard).
+- **Simpan progres** otomatis (localStorage) — bisa dilanjutkan.
+- **PWA**: bisa di-install dan jalan offline.
+
 ## Menjalankan secara lokal
 
 ```bash
@@ -43,29 +55,32 @@ index.html              # meta, Open Graph/Twitter, favicon
 vite.config.js          # plugin React + injeksi %SITE_URL% saat build
 vercel.json             # framework, cache aset, header keamanan
 public/
-├─ favicon.svg          # ikon (siluet Mahameru + plume fajar)
+├─ favicon.svg          # ikon (belati + darah)
 ├─ apple-touch-icon.png # ikon iOS
+├─ icon-192/512.png     # ikon PWA (+ maskable)
+├─ site.webmanifest     # manifest PWA
+├─ sw.js                # service worker (network-first, offline)
 └─ og.png               # gambar share 1200×630
 src/
-├─ main.jsx             # entry React
-├─ App.jsx              # state machine layar + state game (di-hoist)
-├─ data.js              # konten kasus: bukti, tersangka, interogasi, linimasa
+├─ main.jsx             # entry React + registrasi service worker
+├─ App.jsx              # state machine layar + state game (di-hoist) + simpan progres
+├─ data.js              # konten kasus: bukti, tersangka, twist, solusi, peringkat
 ├─ index.css            # design tokens + styling
 └─ components/
+   ├─ Icons.jsx         # ikon bukti, medali siluet, ilustrasi TKP
    ├─ Cover.jsx
    ├─ Briefing.jsx
-   ├─ Investigation.jsx # tab, bukti, interogasi, notebook, gating tuduhan
-   ├─ Accuse.jsx
-   └─ Reveal.jsx
+   ├─ Investigation.jsx # tab, bukti (gated), interogasi, notebook
+   ├─ Accuse.jsx        # pilih tersangka + susun pembuktian (deduksi)
+   └─ Reveal.jsx        # vonis, peringkat, bantahan per-tersangka, bagikan
 ```
 
 ## Catatan
 
 Seluruh konten kasus (latar, karakter, alur) orisinal.
 
-Untuk menambah kasus baru, duplikasi struktur di `src/data.js`. Fitur seperti
-skor, sistem petunjuk, atau penyimpanan progres (localStorage) belum
-diimplementasikan.
+Untuk menambah kasus baru, duplikasi struktur di `src/data.js` (lihat `SOLUTION`,
+`evidence` dengan `locked`/`requires`/`unlocks`, `rebuttals`, dan `RANKS`).
 
 ### Rencana (roadmap)
 

@@ -1,6 +1,27 @@
-import { suspects } from '../data'
+import { suspects, evidence } from '../data'
+import { Silhouette } from './Icons'
 
-export default function Accuse({ accused, setAccused, suspicions, go, confirm }) {
+const SLOTS = [
+  { key: 'motive', label: 'Motif', hint: 'Apa yang mendorongnya?' },
+  { key: 'means', label: 'Cara', hint: 'Bagaimana ia melakukannya?' },
+  { key: 'opportunity', label: 'Kesempatan', hint: 'Kenapa hanya ia yang bisa?' },
+]
+
+export default function Accuse({
+  accused,
+  setAccused,
+  suspicions,
+  examined,
+  proof,
+  setProof,
+  go,
+  confirm,
+}) {
+  const options = evidence.filter((e) => examined.includes(e.id))
+  const proofComplete = SLOTS.every((s) => proof[s.key])
+  const ready = accused && proofComplete
+  const setSlot = (k, v) => setProof({ ...proof, [k]: v })
+
   return (
     <section className="screen" aria-label="Tuduhan">
       <div className="wrap pad">
@@ -9,7 +30,8 @@ export default function Accuse({ accused, setAccused, suspicions, go, confirm })
           <h2>Siapa pembunuhnya?</h2>
         </div>
         <p className="mist" style={{ marginBottom: '2em' }}>
-          Pilih satu. Anda hanya punya satu kesempatan.
+          Pilih satu tersangka, lalu susun pembuktianmu. Anda hanya punya satu
+          kesempatan.
         </p>
 
         <div>
@@ -20,7 +42,10 @@ export default function Accuse({ accused, setAccused, suspicions, go, confirm })
               aria-pressed={accused === s.id}
               onClick={() => setAccused(s.id)}
             >
-              <div className="avatar">{s.init}</div>
+              <div className="avatar">
+                <Silhouette />
+                <span>{s.init}</span>
+              </div>
               <div>
                 <div className="name">
                   {s.name}
@@ -32,22 +57,56 @@ export default function Accuse({ accused, setAccused, suspicions, go, confirm })
           ))}
         </div>
 
+        {accused && (
+          <div className="deduction">
+            <span className="eyebrow">Susun pembuktian</span>
+            <p className="mist" style={{ margin: '.6em 0 1.4em' }}>
+              Tunjuk satu bukti untuk tiap unsur. Inilah yang membedakan tebakan
+              dari deduksi.
+            </p>
+            {SLOTS.map((slot) => (
+              <label key={slot.key} className="proof-slot">
+                <span className="proof-label">
+                  {slot.label}
+                  <em>{slot.hint}</em>
+                </span>
+                <select
+                  value={proof[slot.key]}
+                  onChange={(e) => setSlot(slot.key, e.target.value)}
+                >
+                  <option value="">— pilih bukti —</option>
+                  {options.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          </div>
+        )}
+
         <div className="actions">
           <button className="btn btn-ghost" onClick={() => go('investigation')}>
             ← Periksa lagi
           </button>
           <button
             className="btn btn-blood"
-            disabled={!accused}
+            disabled={!ready}
             onClick={confirm}
             style={{
-              opacity: accused ? 1 : 0.45,
-              cursor: accused ? 'pointer' : 'not-allowed',
+              opacity: ready ? 1 : 0.45,
+              cursor: ready ? 'pointer' : 'not-allowed',
             }}
           >
             Kunci Tuduhan
           </button>
         </div>
+        {accused && !proofComplete && (
+          <p className="gate-msg">
+            Lengkapi ketiga unsur pembuktian sebelum mengunci tuduhan.
+          </p>
+        )}
       </div>
     </section>
   )

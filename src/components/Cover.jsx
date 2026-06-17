@@ -1,4 +1,4 @@
-export default function Cover({ go }) {
+export default function Cover({ go, hasProgress, restart }) {
   return (
     <section className="cover" aria-label="Sampul kasus">
       <div className="cover-sky" />
@@ -14,9 +14,20 @@ export default function Cover({ go }) {
           puncak. Polisi menutup kasusnya sebagai kecelakaan. Keluarganya tidak
           percaya.
         </p>
-        <button className="btn" onClick={() => go('briefing')}>
-          Buka Berkas →
-        </button>
+        {hasProgress ? (
+          <div className="actions" style={{ marginTop: 0 }}>
+            <button className="btn" onClick={() => go('investigation')}>
+              Lanjutkan investigasi →
+            </button>
+            <button className="btn btn-ghost" onClick={restart}>
+              Mulai dari awal
+            </button>
+          </div>
+        ) : (
+          <button className="btn" onClick={() => go('briefing')}>
+            Buka Berkas →
+          </button>
+        )}
       </div>
     </section>
   )

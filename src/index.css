@@ -625,7 +625,242 @@ hr.rule {
   .cover,
   .tabpanel,
   .ev-detail,
-  .q-ans {
+  .q-ans,
+  .deduction {
     animation: none;
   }
+}
+
+/* ════════ v2: icons, medallions, deduction, atmosphere ════════ */
+
+/* film grain + vignette (decorative, never blocks input) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  background: radial-gradient(135% 130% at 50% -12%, transparent 56%, rgba(0, 0, 0, 0.5));
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9001;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* suspect / victim medallion with faint silhouette */
+.avatar {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(120% 120% at 50% 0%, var(--ash-hi), #15181e);
+}
+.avatar .silhouette {
+  position: absolute;
+  left: 50%;
+  bottom: -14%;
+  width: 124%;
+  height: 124%;
+  transform: translateX(-50%);
+  color: var(--mist);
+  opacity: 0.16;
+}
+.avatar > span {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
+/* evidence type icon in the tag row */
+.ev-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.ev-ic {
+  color: var(--ember);
+  flex: 0 0 auto;
+}
+
+/* twist evidence + "new" badge */
+.ev-twist {
+  border-color: rgba(200, 100, 42, 0.5);
+  box-shadow: inset 3px 0 0 var(--ember);
+}
+.ev-twist .ev-ic {
+  color: var(--ember-soft);
+}
+.badge-new {
+  margin-left: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1208;
+  background: var(--ember);
+  border-radius: 2px;
+  padding: 2px 6px;
+  vertical-align: middle;
+}
+
+/* interrogation: unlock note + locked hint */
+.unlock-note {
+  display: block;
+  margin-top: 9px;
+  font-family: 'Space Mono', monospace;
+  font-style: normal;
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ember-soft);
+}
+.locked-hint {
+  margin-top: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--mist-dim);
+  letter-spacing: 0.03em;
+}
+.locked-hint::before {
+  content: '🔒 ';
+}
+
+/* scene illustration banner */
+.scene-band {
+  display: block;
+  width: calc(100% + 44px);
+  height: 150px;
+  margin: 0 -22px 1.8em;
+  border-bottom: 1px solid var(--line);
+}
+.scene-band.closing {
+  height: 120px;
+  margin: 2.6em -22px 0;
+  border-bottom: none;
+  border-top: 1px solid var(--line);
+}
+
+/* ── Accuse: deduction slots ── */
+.deduction {
+  margin-top: 2.6em;
+  border-top: 1px solid var(--line);
+  padding-top: 1.8em;
+  animation: fade 0.3s ease;
+}
+.proof-slot {
+  display: block;
+  margin-bottom: 1.1em;
+}
+.proof-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 0.5em;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.proof-label em {
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: var(--mist);
+}
+.proof-slot select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--ash-hi);
+  color: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 12px 38px 12px 14px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%238a97a6' stroke-width='1.6'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.proof-slot select:focus-visible {
+  outline: 2px solid var(--ember-soft);
+  outline-offset: 2px;
+}
+
+/* ── Reveal: rank, rebuttal, proof recap ── */
+.rank-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px;
+  border-radius: 4px;
+  margin: 0.4em 0 2em;
+  border: 1px solid var(--line);
+  background: var(--ash);
+}
+.rank-chip.right {
+  border-color: rgba(200, 100, 42, 0.5);
+  background: rgba(200, 100, 42, 0.08);
+}
+.rank-chip.wrong {
+  border-color: rgba(154, 48, 48, 0.5);
+  background: rgba(154, 48, 48, 0.1);
+}
+.rank-label {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--bone);
+}
+.rank-note {
+  font-size: 0.9rem;
+  color: var(--mist);
+}
+.rebuttal {
+  border-left: 2px solid var(--blood);
+  padding-left: 14px;
+  color: #d2d7dd;
+  font-style: italic;
+}
+.proof-recap {
+  margin-top: 2.2em;
+  border-top: 1px solid var(--line);
+  padding-top: 1.2em;
+}
+.proof-recap ul {
+  list-style: none;
+  margin-top: 0.8em;
+}
+.proof-recap li {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+.proof-recap li .mono {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.proof-recap li .mark {
+  font-weight: 700;
+}
+.proof-recap li.ok .mark {
+  color: var(--ember-soft);
+}
+.proof-recap li.no .mark {
+  color: var(--blood);
 }

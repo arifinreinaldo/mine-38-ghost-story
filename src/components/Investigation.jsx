@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { evidence, suspects, timeline } from '../data'
+import { suspects, timeline } from '../data'
+import { EvidenceIcon, Silhouette, SceneArt } from './Icons'
 
 const TABS = [
   { id: 'korban', label: 'Korban' },
@@ -17,16 +18,20 @@ function EvidenceItem({ item, seen, onExamine }) {
   }
   return (
     <button
-      className={'ev' + (seen ? ' seen' : '')}
+      className={'ev' + (seen ? ' seen' : '') + (item.twist ? ' ev-twist' : '')}
       aria-expanded={open}
       onClick={toggle}
     >
       <div className="ev-top">
-        <span className="ev-tag">{item.tag}</span>
+        <span className="ev-tag">
+          <EvidenceIcon type={item.icon} className="ev-ic" />
+          {item.tag}
+        </span>
         <span className="chev">{open ? '–' : '+'}</span>
       </div>
       <h3>
         {item.title}
+        {item.twist && !seen && <span className="badge-new">Baru</span>}
         <span className="examined-dot" />
       </h3>
       <p className="ev-sum">{item.summary}</p>
@@ -39,11 +44,19 @@ function EvidenceItem({ item, seen, onExamine }) {
   )
 }
 
-function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion }) {
+function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion, examined }) {
+  const available = s.interrogation
+    .map((qa, i) => ({ qa, i }))
+    .filter(({ qa }) => !qa.requires || examined.includes(qa.requires))
+  const hiddenCount = s.interrogation.length - available.length
+
   return (
     <div className="card suspect">
       <div className="head">
-        <div className="avatar">{s.init}</div>
+        <div className="avatar">
+          <Silhouette />
+          <span>{s.init}</span>
+        </div>
         <div>
           <div className="name">
             {s.name}
@@ -66,7 +79,7 @@ function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion }) {
 
       <div className="interrogation">
         <span className="label">Interogasi</span>
-        {s.interrogation.map((qa, i) => {
+        {available.map(({ qa, i }) => {
           const isAsked = asked.includes(i)
           return (
             <div key={i}>
@@ -78,10 +91,24 @@ function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion }) {
                 <span>{qa.q}</span>
                 <span className="chev">{isAsked ? '–' : '+'}</span>
               </button>
-              {isAsked && <p className="q-ans">{qa.a}</p>}
+              {isAsked && (
+                <p className="q-ans">
+                  {qa.a}
+                  {qa.unlocks && (
+                    <span className="unlock-note">
+                      Bukti baru terbuka — periksa tab “Bukti”.
+                    </span>
+                  )}
+                </p>
+              )}
             </div>
           )
         })}
+        {hiddenCount > 0 && (
+          <p className="locked-hint">
+            Pertanyaan lain bisa terbuka begitu kau menemukan bukti terkait.
+          </p>
+        )}
       </div>
 
       <button
@@ -95,6 +122,7 @@ function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion }) {
 }
 
 export default function Investigation({
+  visibleEvidence,
   examined,
   examineEvidence,
   interrogated,
@@ -109,6 +137,7 @@ export default function Investigation({
   const interrogatedCount = suspects.filter(
     (s) => (interrogated[s.id] || []).length > 0
   ).length
+  const examinedCount = visibleEvidence.filter((e) => examined.includes(e.id)).length
 
   return (
     <section className="screen" aria-label="Investigasi">
@@ -128,9 +157,13 @@ export default function Investigation({
 
         {tab === 'korban' && (
           <div className="tabpanel">
+            <SceneArt className="scene-band" />
             <span className="eyebrow">Korban</span>
             <div className="dossier-row">
-              <div className="avatar">AW</div>
+              <div className="avatar">
+                <Silhouette />
+                <span>AW</span>
+              </div>
               <div>
                 <h3 style={{ fontSize: '1.4rem' }}>Arya Wibowo</h3>
                 <span className="mist mono" style={{ fontSize: '.82rem' }}>
@@ -156,7 +189,7 @@ export default function Investigation({
           <div className="tabpanel">
             <span className="eyebrow">Bukti — ketuk untuk memeriksa</span>
             <div style={{ marginTop: '1.4em' }}>
-              {evidence.map((e) => (
+              {visibleEvidence.map((e) => (
                 <EvidenceItem
                   key={e.id}
                   item={e}
@@ -180,6 +213,7 @@ export default function Investigation({
                   askQuestion={askQuestion}
                   suspected={!!suspicions[s.id]}
                   toggleSuspicion={toggleSuspicion}
+                  examined={examined}
                 />
               ))}
             </div>
@@ -202,7 +236,7 @@ export default function Investigation({
 
         <hr className="rule" />
         <p className="progress">
-          Bukti diperiksa: {examined.length}/{evidence.length} · Saksi
+          Bukti diperiksa: {examinedCount}/{visibleEvidence.length} · Saksi
           diinterogasi: {interrogatedCount}/{suspects.length}
         </p>
         <div className="actions">
