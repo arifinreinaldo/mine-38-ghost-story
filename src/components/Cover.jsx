@@ -1,4 +1,5 @@
 import { useAuth } from '../auth/AuthProvider'
+import { usePwa } from '../pwa/usePwa'
 import { nextStory } from '../stories'
 
 function Account({ go }) {
@@ -19,6 +20,7 @@ function Account({ go }) {
 }
 
 export default function Cover({ go, hasProgress, restart }) {
+  const { canInstall, standalone, promptInstall } = usePwa()
   return (
     <section className="cover" aria-label="Sampul kasus">
       <div className="cover-sky" />
@@ -58,6 +60,12 @@ export default function Cover({ go, hasProgress, restart }) {
           </span>
           <span className="next-arrow">→</span>
         </button>
+
+        {canInstall && !standalone && (
+          <button className="install-btn" onClick={promptInstall}>
+            <span aria-hidden="true">⤓</span> Pasang aplikasi
+          </button>
+        )}
       </div>
     </section>
   )

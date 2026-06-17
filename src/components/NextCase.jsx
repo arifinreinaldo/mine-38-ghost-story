@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthProvider'
 import { fetchStoryContent } from '../lib/content'
+import { setIntent } from '../lib/intent'
 import { nextStory } from '../stories'
 import { SceneArt } from './Icons'
 
@@ -32,10 +33,16 @@ export default function NextCase({ go }) {
       <div className="card lock-card">
         <span className="label">Perlu akun</span>
         <p style={{ margin: '.6em 0 1.2em' }}>
-          Masuk atau daftar gratis untuk mengakses kasus ini.
+          Masuk atau daftar gratis — kamu akan langsung kembali ke kasus ini.
         </p>
-        <button className="btn" onClick={() => go('auth')}>
-          Masuk / Daftar →
+        <button
+          className="btn"
+          onClick={() => {
+            setIntent('next')
+            go('auth')
+          }}
+        >
+          Masuk / Daftar untuk lanjut →
         </button>
       </div>
     )

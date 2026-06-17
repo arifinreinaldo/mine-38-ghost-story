@@ -1046,3 +1046,88 @@ body::after {
 .lock-card .label {
   color: var(--ember);
 }
+
+/* ════════ PWA: standalone chrome ════════ */
+
+/* respect notches / home indicator when installed (display:standalone) */
+@supports (padding: env(safe-area-inset-top)) {
+  .wrap {
+    padding-left: calc(22px + env(safe-area-inset-left));
+    padding-right: calc(22px + env(safe-area-inset-right));
+  }
+  .pad {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+  .cover-inner {
+    padding-left: calc(22px + env(safe-area-inset-left));
+    padding-right: calc(22px + env(safe-area-inset-right));
+  }
+  .account {
+    top: calc(16px + env(safe-area-inset-top));
+    right: calc(18px + env(safe-area-inset-right));
+  }
+  .seg {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* install affordance (shown only when the browser offers it) */
+.install-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 1.4em;
+  background: transparent;
+  border: 1px dashed var(--line);
+  color: var(--mist);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.install-btn:hover {
+  border-color: var(--ember);
+  color: var(--bone);
+}
+
+/* offline notice */
+.offline-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 8000;
+  text-align: center;
+  background: var(--blood);
+  color: #f4e6e6;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+}
+
+/* app-like screen entrance */
+@keyframes screenIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.screen {
+  animation: screenIn 0.4s ease both;
+}
+
+/* keep the reduced-motion contract (must come last to win the cascade) */
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    animation: none;
+  }
+}

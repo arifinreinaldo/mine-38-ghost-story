@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { AuthProvider } from './auth/AuthProvider'
+import './pwa/pwa' // capture the install prompt as early as possible
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

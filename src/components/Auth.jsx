@@ -17,12 +17,13 @@ export default function Auth({ go }) {
       if (mode === 'signin') {
         const { error } = await signIn(email, password)
         if (error) setMsg({ type: 'error', text: error.message })
-        else go('next')
+        // success → App resumes the intended screen when the session updates
       } else {
         const { data, error } = await signUp(email, password)
         if (error) setMsg({ type: 'error', text: error.message })
-        else if (data.session) go('next')
-        else setMsg({ type: 'info', text: 'Cek email untuk konfirmasi akun, lalu masuk.' })
+        else if (!data.session)
+          setMsg({ type: 'info', text: 'Cek email untuk konfirmasi akun, lalu masuk.' })
+        // session created → App resumes the intended screen
       }
     } finally {
       setBusy(false)
