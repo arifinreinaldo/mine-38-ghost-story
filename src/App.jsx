@@ -5,6 +5,8 @@ import Briefing from './components/Briefing'
 import Investigation from './components/Investigation'
 import Accuse from './components/Accuse'
 import Reveal from './components/Reveal'
+import Auth from './components/Auth'
+import NextCase from './components/NextCase'
 
 const SAVE_KEY = 'mdm-save-v1'
 const EMPTY_PROOF = { motive: '', means: '', opportunity: '' }
@@ -114,6 +116,10 @@ export default function App() {
       )
     case 'reveal':
       return <Reveal accused={accused} proof={proof} examined={examined} restart={restart} />
+    case 'auth':
+      return <Auth go={go} />
+    case 'next':
+      return <NextCase go={go} />
     default:
       return <Cover go={go} hasProgress={hasProgress} restart={restart} />
   }

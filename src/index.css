@@ -864,3 +864,185 @@ body::after {
 .proof-recap li.no .mark {
   color: var(--blood);
 }
+
+/* ════════ auth + gated next case ════════ */
+
+/* account control on the cover */
+.account {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+}
+.account-email {
+  color: var(--mist);
+  max-width: 42vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--bone);
+  font-family: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.account button:hover {
+  border-color: var(--mist-dim);
+}
+
+/* locked "next case" teaser on the cover */
+.next-teaser {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 2.4em;
+  text-align: left;
+  background: rgba(30, 35, 43, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 14px 16px;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.next-teaser:hover {
+  border-color: var(--mist-dim);
+  background: var(--ash);
+}
+.next-teaser .lock-ic {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+.next-teaser .next-label {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.next-teaser .next-title {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--bone);
+}
+.next-teaser .next-arrow {
+  margin-left: auto;
+  color: var(--mist-dim);
+}
+.next-teaser:focus-visible {
+  outline: 2px solid var(--ember-soft);
+  outline-offset: 3px;
+}
+
+/* back link */
+.link-back {
+  background: none;
+  border: none;
+  color: var(--mist);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  padding: 0 0 1.6em;
+}
+.link-back:hover {
+  color: var(--bone);
+}
+
+/* auth form */
+.auth-wrap {
+  max-width: 460px;
+}
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1em;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.field span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+.field input {
+  background: var(--ash-hi);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--bone);
+  font-family: inherit;
+  font-size: 0.98rem;
+  padding: 12px 14px;
+}
+.field input:focus-visible {
+  outline: 2px solid var(--ember-soft);
+  outline-offset: 2px;
+}
+.auth-form .btn {
+  margin-top: 0.4em;
+  justify-content: center;
+}
+.auth-magic {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1em;
+}
+.auth-msg {
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+}
+.auth-msg.error {
+  color: #e6b3b3;
+  border-color: rgba(154, 48, 48, 0.5);
+  background: rgba(154, 48, 48, 0.1);
+}
+.auth-msg.info {
+  color: var(--mist);
+  background: var(--ash);
+}
+.auth-toggle {
+  margin-top: 1.6em;
+  color: var(--mist);
+  font-size: 0.92rem;
+}
+.auth-toggle button {
+  background: none;
+  border: none;
+  color: var(--ember-soft);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* gated card */
+.lock-card {
+  background: rgba(30, 35, 43, 0.7);
+}
+.lock-card .label {
+  color: var(--ember);
+}
