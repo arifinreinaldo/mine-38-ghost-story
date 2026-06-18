@@ -104,8 +104,6 @@ export default function Reveal({ caseData, accused, proof = {}, examined = [], r
 
         <SceneArt className="scene-band closing" variant={caseData.scene} />
 
-        <Disclaimer disclaimer={caseData.disclaimer} />
-
         <div className="actions">
           <button className="btn" onClick={share}>
             {copied ? '✓ Tautan disalin' : 'Bagikan hasil'}
@@ -119,6 +117,8 @@ export default function Reveal({ caseData, accused, proof = {}, examined = [], r
             </button>
           )}
         </div>
+
+        <Disclaimer disclaimer={caseData.disclaimer} />
       </div>
     </section>
   )

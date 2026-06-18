@@ -1134,12 +1134,21 @@ body::after {
 
 /* ════════ disclaimers ════════ */
 .disclaimer {
-  margin-top: 2em;
+  margin-top: 2.4em;
   padding-top: 1.2em;
   border-top: 1px solid var(--line);
+}
+.disclaimer p {
+  margin: 0;
   font-size: 0.8rem;
   line-height: 1.65;
   color: var(--mist);
+}
+.disclaimer p + p {
+  margin-top: 0.7em;
+}
+.disclaimer-src {
+  font-family: 'Space Mono', monospace;
 }
 .disclaimer-tag {
   display: inline-block;
