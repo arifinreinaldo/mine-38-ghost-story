@@ -210,6 +210,26 @@ export function SceneArt({ className, variant = 'mountain' }) {
             <path d="M0 -20 L13 -16 L0 -12 Z" fill="#9a3030" />
           </g>
         </g>
+      ) : variant === 'highland' ? (
+        <g>
+          {/* misty highland tea hills + colonial lodge with tower */}
+          <path d="M-10 196 Q160 156 330 188 T660 180 T810 196 L810 260 L-10 260 Z" fill="#232c3b" opacity="0.65" />
+          <rect x="0" y="182" width="800" height="20" fill="#191e27" opacity="0.5" />
+          <path d="M-10 224 Q200 182 430 214 T810 210 L810 260 L-10 260 Z" fill="#171c24" />
+          <rect x="470" y="170" width="120" height="56" fill="#10131a" />
+          <path d="M462 170 L530 146 L598 170 Z" fill="#1a2029" />
+          <rect x="560" y="120" width="26" height="50" fill="#10131a" />
+          <path d="M556 120 L573 104 L590 120 Z" fill="#1a2029" />
+          <rect x="567" y="132" width="12" height="12" fill="#e08a4d" opacity="0.9" />
+          <rect x="488" y="188" width="16" height="22" fill="#e08a4d" opacity="0.5" />
+          <rect x="520" y="188" width="16" height="22" fill="#e08a4d" opacity="0.5" />
+          <path d="M-10 246 Q250 216 520 240 T810 236 L810 260 L-10 260 Z" fill="#0e1116" />
+          <rect x="0" y="214" width="800" height="18" fill="#191e27" opacity="0.45" />
+          <g transform="translate(548 222)">
+            <path d="M0 0 v-18" stroke="#9a3030" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
+          </g>
+        </g>
       ) : (
         <g>
           <path d="M-10 260 L150 150 L300 210 L470 130 L600 195 L740 120 L810 175 L810 260 Z" fill="#232c3b" opacity="0.9" />
