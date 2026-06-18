@@ -1131,3 +1131,36 @@ body::after {
     animation: none;
   }
 }
+
+/* ════════ disclaimers ════════ */
+.disclaimer {
+  margin-top: 2em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--mist);
+}
+.disclaimer-tag {
+  display: inline-block;
+  margin-right: 0.6em;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mist-dim);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 1px 6px;
+  vertical-align: middle;
+}
+.disclaimer a {
+  color: var(--ember-soft);
+}
+.fiction-note {
+  margin-top: 1.6em;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--mist-dim);
+}

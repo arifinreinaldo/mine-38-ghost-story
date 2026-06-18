@@ -10,6 +10,13 @@ export const kencana = {
   title: 'Maut di Wisma Kencana',
   blurb:
     'Sang dermawan ditemukan tewas di pesta pertunangannya sendiri. Serangan jantung — atau ada yang menyulapnya?',
+  disclaimer: {
+    text: 'Kisah ini fiksi. Terinspirasi dari fenomena viral di Indonesia — penipuan berkedok "dermawan / kakek miliarder" dengan mahar dan cek palsu. Seluruh tokoh, nama, tempat, dan kejadian adalah rekaan; kemiripan dengan orang atau peristiwa nyata tidak disengaja.',
+    source: {
+      label: 'Inspirasi: "Kebohongan Plot Twist di Indonesia" (YouTube)',
+      url: 'https://www.youtube.com/watch?v=_wkJoSaVwJM',
+    },
+  },
   cover: {
     lead: 'Vila megah, mahar miliaran, dan seorang dermawan yang dicintai sekampung. Esok subuhnya ia tewas, kotak mahar dibobol. Tapi tak ada yang seperti tampaknya.',
   },

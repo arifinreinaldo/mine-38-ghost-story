@@ -9,6 +9,9 @@ export const mahameru = {
   title: 'Maut di Mahameru',
   blurb:
     'Subuh di puncak Semeru, seorang pendaki ditemukan tewas. Kecelakaan atau pembunuhan?',
+  disclaimer: {
+    text: 'Kisah ini fiksi orisinal. Seluruh tokoh, nama, tempat, dan kejadian adalah rekaan.',
+  },
   cover: {
     lead: 'Subuh, pukul 04.40. Seorang pendaki ditemukan tewas di pasir menjelang puncak. Polisi menutup kasusnya sebagai kecelakaan. Keluarganya tidak percaya.',
   },

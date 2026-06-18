@@ -30,6 +30,10 @@ export default function Briefing({ caseData, go }) {
             Mulai Investigasi →
           </button>
         </div>
+
+        <p className="fiction-note">
+          Cerita fiksi. Tokoh, nama, dan kejadian sepenuhnya rekaan.
+        </p>
       </div>
     </section>
   )

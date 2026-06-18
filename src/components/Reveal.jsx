@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { RANKS } from '../lib/ranks'
 import { SceneArt } from './Icons'
+import Disclaimer from './Disclaimer'
 
 const SLOTS = [
   { key: 'motive', label: 'Motif' },
@@ -102,6 +103,8 @@ export default function Reveal({ caseData, accused, proof = {}, examined = [], r
         </div>
 
         <SceneArt className="scene-band closing" variant={caseData.scene} />
+
+        <Disclaimer disclaimer={caseData.disclaimer} />
 
         <div className="actions">
           <button className="btn" onClick={share}>
