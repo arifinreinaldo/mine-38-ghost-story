@@ -11,7 +11,7 @@ gratis tanpa backend.
 | Kasus | Tingkat | Akses |
 |---|---|---|
 | **Maut di Mahameru** — pendaki tewas di Semeru | Sedang | Gratis (sample) |
-| **Maut di Wisma Kencana** — "sang dermawan" tewas di pesta megahnya | Sulit | Perlu registrasi |
+| **Maut di Wisma Kencana** — "sang dermawan" tewas di pesta megahnya | Mudah | Perlu registrasi |
 
 Kasus kedua lebih sulit: 5 tersangka, 10 bukti, dan tiga lapis kejutan
 (harta palsu → perampokan rekayasa → pengkhianatan partner).

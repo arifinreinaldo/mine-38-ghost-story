@@ -4,7 +4,7 @@
 export const garut = {
   id: 'garut',
   free: false,
-  difficulty: 'Sangat Sulit',
+  difficulty: 'Sedang',
   code: 'LK-0945',
   location: 'Loji Kabut, Garut',
   scene: 'highland',

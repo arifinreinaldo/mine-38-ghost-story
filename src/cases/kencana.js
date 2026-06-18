@@ -3,7 +3,7 @@
 export const kencana = {
   id: 'kencana',
   free: false,
-  difficulty: 'Sulit',
+  difficulty: 'Mudah',
   code: 'WK-1125',
   location: 'Wisma Kencana, Puncak',
   scene: 'estate',

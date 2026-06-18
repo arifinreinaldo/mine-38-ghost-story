@@ -3,7 +3,7 @@
 export const mutiara = {
   id: 'mutiara',
   free: false,
-  difficulty: 'Sulit',
+  difficulty: 'Mudah',
   code: 'PM-0226',
   location: 'Pulau Mutiara, Sulawesi',
   scene: 'coast',
