@@ -192,6 +192,24 @@ export function SceneArt({ className, variant = 'mountain' }) {
           <path d="M384 230 L384 188 a16 16 0 0 1 32 0 L416 230 Z" fill="#e08a4d" opacity="0.92" />
           <line x1="400" y1="190" x2="400" y2="230" stroke="#c8642a" strokeWidth="1.5" />
         </g>
+      ) : variant === 'coast' ? (
+        <g>
+          {/* stormy sea + lighthouse */}
+          <rect x="0" y="186" width="800" height="74" fill="#10131a" />
+          <path d="M0 196 q120 -9 240 0 t240 0 t240 0" fill="none" stroke="#2a3340" strokeWidth="2" opacity="0.7" />
+          <path d="M0 214 q140 -8 280 0 t280 0 t280 0" fill="none" stroke="#222c3b" strokeWidth="2" opacity="0.7" />
+          <path d="M520 204 Q576 158 632 204 Z" fill="#0e1116" />
+          <path d="M577 84 L196 40 L214 140 Z" fill="#e08a4d" opacity="0.14" />
+          <path d="M552 204 L560 92 L594 92 L600 204 Z" fill="#161b23" />
+          <path d="M560 120 L594 120 M558 150 L596 150" stroke="#10131a" strokeWidth="3" />
+          <path d="M554 92 L577 70 L600 92 Z" fill="#10131a" />
+          <rect x="560" y="74" width="34" height="20" rx="2" fill="#0e1116" />
+          <circle cx="577" cy="84" r="6" fill="#e08a4d" />
+          <g transform="translate(577 198)">
+            <path d="M0 0 v-20" stroke="#9a3030" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M0 -20 L13 -16 L0 -12 Z" fill="#9a3030" />
+          </g>
+        </g>
       ) : (
         <g>
           <path d="M-10 260 L150 150 L300 210 L470 130 L600 195 L740 120 L810 175 L810 260 Z" fill="#232c3b" opacity="0.9" />

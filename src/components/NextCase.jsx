@@ -1,27 +1,22 @@
 import { useAuth } from '../auth/AuthProvider'
 import { setIntent } from '../lib/intent'
-import { gatedCase } from '../cases'
-import { SceneArt } from './Icons'
+import { gatedCases } from '../cases'
+import { hasProgress } from '../lib/save'
 
 export default function NextCase({ go, play }) {
   const { configured, user, loading } = useAuth()
 
-  let body
-  if (loading) {
-    body = <p className="mist">Memuat…</p>
-  } else if (!configured) {
-    body = (
-      <div className="card lock-card">
-        <p>Kasus berikutnya akan segera hadir. Registrasi dibuka saat rilis.</p>
-      </div>
-    )
-  } else if (!user) {
-    body = (
-      <div className="card lock-card">
-        <span className="label">Perlu akun</span>
-        <p style={{ margin: '.6em 0 1.2em' }}>
-          Masuk atau daftar gratis — kamu akan langsung kembali ke kasus ini.
-        </p>
+  const intro = !configured
+    ? 'Kasus-kasus ini terbuka setelah registrasi diaktifkan.'
+    : user
+    ? 'Akun terverifikasi. Pilih kasus untuk mulai.'
+    : 'Masuk atau daftar gratis untuk membuka kasus-kasus ini — kamu akan langsung kembali ke sini.'
+
+  const cardButton = (c) => {
+    if (!configured) return <p className="locked-hint">Segera hadir</p>
+    if (loading) return <p className="mist">Memuat…</p>
+    if (!user)
+      return (
         <button
           className="btn"
           onClick={() => {
@@ -29,40 +24,41 @@ export default function NextCase({ go, play }) {
             go('auth')
           }}
         >
-          Masuk / Daftar untuk lanjut →
+          Masuk untuk membuka →
         </button>
-      </div>
-    )
-  } else {
-    body = (
-      <div className="card lock-card">
-        <span className="label">Akun terverifikasi ✓ · Tingkat {gatedCase.difficulty}</span>
-        <p style={{ margin: '.6em 0 1.2em' }}>
-          Kasus terbuka untukmu. Lebih banyak tersangka, lebih banyak bukti, dan
-          jebakan yang lebih licik dari kasus pertama.
-        </p>
-        <button className="btn btn-blood" onClick={() => play(gatedCase.id)}>
-          Mulai Kasus →
-        </button>
-      </div>
+      )
+    return (
+      <button className="btn btn-blood" onClick={() => play(c.id)}>
+        {hasProgress(c.id) ? 'Lanjutkan →' : 'Mulai Kasus →'}
+      </button>
     )
   }
 
   return (
-    <section className="screen" aria-label="Kasus berikutnya">
+    <section className="screen" aria-label="Kasus terkunci">
       <div className="wrap pad">
-        <SceneArt className="scene-band" variant={gatedCase.scene} />
         <button className="link-back" onClick={() => go('home')}>
           ← Beranda
         </button>
         <div className="section-head">
-          <span className="eyebrow">Berkas Terkunci · {gatedCase.code}</span>
-          <h2>{gatedCase.title}</h2>
+          <span className="eyebrow">Berkas Terkunci</span>
+          <h2>Kasus lainnya</h2>
         </div>
         <p className="mist" style={{ marginBottom: '2em' }}>
-          {gatedCase.blurb}
+          {intro}
         </p>
-        {body}
+
+        {gatedCases.map((c) => (
+          <div className="card lock-card case-row" key={c.id}>
+            <span className="label">
+              Tingkat {c.difficulty}
+              {hasProgress(c.id) ? ' · tersimpan' : ''}
+            </span>
+            <h3 style={{ fontSize: '1.25rem', margin: '.25em 0 .4em' }}>{c.title}</h3>
+            <p style={{ color: 'var(--mist)', marginBottom: '1.1em' }}>{c.blurb}</p>
+            {cardButton(c)}
+          </div>
+        ))}
       </div>
     </section>
   )

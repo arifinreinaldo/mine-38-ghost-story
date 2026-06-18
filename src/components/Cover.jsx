@@ -1,6 +1,6 @@
 import { useAuth } from '../auth/AuthProvider'
 import { usePwa } from '../pwa/usePwa'
-import { freeCase, gatedCase } from '../cases'
+import { freeCase, gatedCases } from '../cases'
 import { hasProgress, clearSave } from '../lib/save'
 
 function Account({ go }) {
@@ -60,10 +60,8 @@ export default function Cover({ go, play }) {
         <button className="next-teaser" onClick={() => go('next')}>
           <span className="lock-ic" aria-hidden="true">🔒</span>
           <span>
-            <span className="next-label">
-              Kasus berikutnya · {gatedCase.difficulty}
-            </span>
-            <span className="next-title">{gatedCase.title}</span>
+            <span className="next-label">Kasus lainnya</span>
+            <span className="next-title">{gatedCases.length} kasus terkunci</span>
           </span>
           <span className="next-arrow">→</span>
         </button>

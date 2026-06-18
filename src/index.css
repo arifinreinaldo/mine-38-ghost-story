@@ -1164,3 +1164,8 @@ body::after {
   letter-spacing: 0.04em;
   color: var(--mist-dim);
 }
+
+/* case library rows */
+.case-row {
+  margin-bottom: 16px;
+}
