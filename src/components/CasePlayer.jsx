@@ -16,7 +16,10 @@ export default function CasePlayer({ caseData, onHome }) {
   const [interrogated, setInterrogated] = useState(saved.interrogated || {})
   const [suspicions, setSuspicions] = useState(saved.suspicions || {})
   const [unlocked, setUnlocked] = useState(saved.unlocked || [])
-  const [accused, setAccused] = useState(saved.accused ?? null)
+  const [accused, setAccused] = useState(() => {
+    const a = saved.accused
+    return Array.isArray(a) ? a : a ? [a] : []
+  })
   const [proof, setProof] = useState(saved.proof || EMPTY_PROOF)
 
   useEffect(() => {
@@ -63,7 +66,7 @@ export default function CasePlayer({ caseData, onHome }) {
     setInterrogated({})
     setSuspicions({})
     setUnlocked([])
-    setAccused(null)
+    setAccused([])
     setProof(EMPTY_PROOF)
     go('briefing')
   }

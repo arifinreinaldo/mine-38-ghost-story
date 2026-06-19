@@ -1178,3 +1178,14 @@ body::after {
 .case-row {
   margin-bottom: 16px;
 }
+
+/* multi-select accusation mark */
+.pick-mark {
+  margin-left: auto;
+  align-self: center;
+  color: var(--ember-soft);
+  font-weight: 700;
+  font-size: 1.1rem;
+  min-width: 0.8em;
+  text-align: center;
+}

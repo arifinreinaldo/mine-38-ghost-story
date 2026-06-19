@@ -9,11 +9,17 @@ const SLOTS = [
   { key: 'opportunity', label: 'Kesempatan' },
 ]
 
-export default function Reveal({ caseData, accused, proof = {}, examined = [], restart, onHome }) {
+const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x))
+
+export default function Reveal({ caseData, accused = [], proof = {}, examined = [], restart, onHome }) {
   const [copied, setCopied] = useState(false)
   const { solution, suspects, evidence, reveal } = caseData
 
-  const correct = accused === solution.killer
+  const killers = solution.killers || [solution.killer]
+  const acc = Array.isArray(accused) ? accused : accused ? [accused] : []
+  const nameOf = (id) => suspects.find((s) => s.id === id)?.name ?? '—'
+
+  const correct = sameSet(acc, killers)
   const slotOK = (k) => solution[k]?.includes(proof[k])
   const proofScore = SLOTS.filter((s) => slotOK(s.key)).length
   const twistId = evidence.find((e) => e.twist)?.id
@@ -24,7 +30,9 @@ export default function Reveal({ caseData, accused, proof = {}, examined = [], r
     rankKey = proofScore === 3 && foundTwist ? 'utama' : proofScore >= 2 ? 'inspektur' : 'muda'
   }
   const rank = RANKS[rankKey]
-  const chosen = suspects.find((s) => s.id === accused)?.name ?? '—'
+
+  const chosenLabel = acc.length ? acc.map(nameOf).join(', ') : '—'
+  const wronglyAccused = acc.filter((id) => !killers.includes(id))
 
   const share = async () => {
     const url = (typeof window !== 'undefined' && window.location.origin) || ''
@@ -60,16 +68,19 @@ export default function Reveal({ caseData, accused, proof = {}, examined = [], r
         <div className="solution">
           {correct ? (
             <p>
-              Anda menuduh <strong>{chosen}</strong> — dan Anda benar.
+              Anda menuduh <strong>{chosenLabel}</strong> — dan Anda benar.
             </p>
           ) : (
             <>
               <p>
-                Anda menuduh <strong>{chosen}</strong>. Tapi bukti mengarah ke orang
-                lain.
+                Anda menuduh <strong>{chosenLabel}</strong>. Tapi kebenarannya berbeda.
               </p>
-              {reveal.rebuttals[accused] && (
-                <p className="rebuttal">{reveal.rebuttals[accused]}</p>
+              {wronglyAccused.map((id) =>
+                reveal.rebuttals[id] ? (
+                  <p className="rebuttal" key={id}>
+                    {reveal.rebuttals[id]}
+                  </p>
+                ) : null
               )}
               <p>Inilah yang sebenarnya terjadi.</p>
             </>
