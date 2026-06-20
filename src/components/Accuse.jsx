@@ -1,15 +1,17 @@
 import { Silhouette } from './Icons'
 
-const SLOTS = [
-  { key: 'motive', label: 'Motif', hint: 'Apa yang mendorong mereka?' },
-  { key: 'means', label: 'Cara', hint: 'Bagaimana ia dilakukan?' },
-  { key: 'opportunity', label: 'Kesempatan', hint: 'Siapa yang bisa?' },
-]
+const DEFAULT_LABELS = {
+  motive: { label: 'Motif', hint: 'Apa yang mendorong mereka?' },
+  means: { label: 'Cara', hint: 'Bagaimana ia dilakukan?' },
+  opportunity: { label: 'Kesempatan', hint: 'Siapa yang bisa?' },
+}
 
 export default function Accuse({
   caseData,
   accused,
   setAccused,
+  accident,
+  setAccident,
   suspicions,
   examined,
   proof,
@@ -17,12 +19,28 @@ export default function Accuse({
   go,
   confirm,
 }) {
+  const labels = caseData.solution.proofLabels || {}
+  const SLOTS = ['motive', 'means', 'opportunity'].map((k) => ({
+    key: k,
+    label: labels[k]?.label || DEFAULT_LABELS[k].label,
+    hint: labels[k]?.hint || DEFAULT_LABELS[k].hint,
+  }))
+
   const options = caseData.evidence.filter((e) => examined.includes(e.id))
   const proofComplete = SLOTS.every((s) => proof[s.key])
-  const ready = accused.length > 0 && proofComplete
+  const hasVerdict = accused.length > 0 || accident
+  const ready = hasVerdict && proofComplete
   const setSlot = (k, v) => setProof({ ...proof, [k]: v })
-  const toggle = (id) =>
+
+  const toggleSuspect = (id) => {
+    if (accident) setAccident(false)
     setAccused(accused.includes(id) ? accused.filter((x) => x !== id) : [...accused, id])
+  }
+  const toggleAccident = () => {
+    const next = !accident
+    setAccident(next)
+    if (next) setAccused([])
+  }
 
   return (
     <section className="screen" aria-label="Tuduhan">
@@ -32,8 +50,8 @@ export default function Accuse({
           <h2>Siapa pembunuhnya?</h2>
         </div>
         <p className="mist" style={{ marginBottom: '2em' }}>
-          Pilih tersangka — <strong>bisa lebih dari satu</strong> — lalu susun
-          pembuktianmu. Anda hanya punya satu kesempatan.
+          Pilih tersangka — <strong>bisa lebih dari satu</strong> — atau simpulkan
+          bahwa ini bukan pembunuhan. Lalu susun pembuktianmu.
         </p>
 
         <div>
@@ -44,7 +62,7 @@ export default function Accuse({
                 key={s.id}
                 className="suspect-pick"
                 aria-pressed={picked}
-                onClick={() => toggle(s.id)}
+                onClick={() => toggleSuspect(s.id)}
               >
                 <div className="avatar">
                   <Silhouette />
@@ -63,9 +81,21 @@ export default function Accuse({
               </button>
             )
           })}
+
+          <button
+            className={'verdict-accident' + (accident ? ' on' : '')}
+            aria-pressed={accident}
+            onClick={toggleAccident}
+          >
+            <span className="va-ic" aria-hidden="true">⚖</span>
+            <span className="va-text">
+              Bukan pembunuhan — kematian ini sebuah kecelakaan
+            </span>
+            <span className="pick-mark" aria-hidden="true">{accident ? '✓' : ''}</span>
+          </button>
         </div>
 
-        {accused.length > 0 && (
+        {hasVerdict && (
           <div className="deduction">
             <span className="eyebrow">Susun pembuktian</span>
             <p className="mist" style={{ margin: '.6em 0 1.4em' }}>
@@ -110,7 +140,7 @@ export default function Accuse({
             Kunci Tuduhan
           </button>
         </div>
-        {accused.length > 0 && !proofComplete && (
+        {hasVerdict && !proofComplete && (
           <p className="gate-msg">
             Lengkapi ketiga unsur pembuktian sebelum mengunci tuduhan.
           </p>

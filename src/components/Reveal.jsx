@@ -3,25 +3,23 @@ import { RANKS } from '../lib/ranks'
 import { SceneArt } from './Icons'
 import Disclaimer from './Disclaimer'
 
-const SLOTS = [
-  { key: 'motive', label: 'Motif' },
-  { key: 'means', label: 'Cara' },
-  { key: 'opportunity', label: 'Kesempatan' },
-]
-
+const DEFAULT_LABELS = { motive: 'Motif', means: 'Cara', opportunity: 'Kesempatan' }
 const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x))
 
-export default function Reveal({ caseData, accused = [], proof = {}, examined = [], restart, onHome }) {
+export default function Reveal({ caseData, accused = [], accident = false, proof = {}, examined = [], restart, onHome }) {
   const [copied, setCopied] = useState(false)
   const { solution, suspects, evidence, reveal } = caseData
 
-  const killers = solution.killers || [solution.killer]
+  const accidentCase = !!solution.accident
+  const killers = solution.killers || (solution.killer ? [solution.killer] : [])
   const acc = Array.isArray(accused) ? accused : accused ? [accused] : []
   const nameOf = (id) => suspects.find((s) => s.id === id)?.name ?? '—'
+  const labelOf = (k) => solution.proofLabels?.[k]?.label || DEFAULT_LABELS[k]
 
-  const correct = sameSet(acc, killers)
+  const correct = accidentCase ? accident && acc.length === 0 : !accident && sameSet(acc, killers)
+  const slots = ['motive', 'means', 'opportunity']
   const slotOK = (k) => solution[k]?.includes(proof[k])
-  const proofScore = SLOTS.filter((s) => slotOK(s.key)).length
+  const proofScore = slots.filter(slotOK).length
   const twistId = evidence.find((e) => e.twist)?.id
   const foundTwist = twistId ? examined.includes(twistId) : true
 
@@ -31,22 +29,25 @@ export default function Reveal({ caseData, accused = [], proof = {}, examined = 
   }
   const rank = RANKS[rankKey]
 
-  const chosenLabel = acc.length ? acc.map(nameOf).join(', ') : '—'
+  const chosenLabel = accident
+    ? 'sebuah kecelakaan — bukan pembunuhan'
+    : acc.length
+    ? acc.map(nameOf).join(', ')
+    : '— (tak ada)'
   const wronglyAccused = acc.filter((id) => !killers.includes(id))
 
   const share = async () => {
     const url = (typeof window !== 'undefined' && window.location.origin) || ''
     const text = `Aku menuntaskan "${caseData.title}" — peringkat: ${rank.label}. Berani memecahkan kasusnya?`
     try {
-      if (navigator.share) {
-        await navigator.share({ title: caseData.title, text, url })
-      } else {
+      if (navigator.share) await navigator.share({ title: caseData.title, text, url })
+      else {
         await navigator.clipboard.writeText(`${text} ${url}`)
         setCopied(true)
         setTimeout(() => setCopied(false), 2200)
       }
     } catch {
-      /* user dismissed share sheet — no-op */
+      /* dismissed */
     }
   }
 
@@ -68,12 +69,13 @@ export default function Reveal({ caseData, accused = [], proof = {}, examined = 
         <div className="solution">
           {correct ? (
             <p>
-              Anda menuduh <strong>{chosenLabel}</strong> — dan Anda benar.
+              Kesimpulan Anda: <strong>{chosenLabel}</strong> — dan Anda benar.
             </p>
           ) : (
             <>
               <p>
-                Anda menuduh <strong>{chosenLabel}</strong>. Tapi kebenarannya berbeda.
+                Kesimpulan Anda: <strong>{chosenLabel}</strong>. Tapi kebenarannya
+                berbeda.
               </p>
               {wronglyAccused.map((id) =>
                 reveal.rebuttals[id] ? (
@@ -99,12 +101,12 @@ export default function Reveal({ caseData, accused = [], proof = {}, examined = 
         <div className="proof-recap">
           <span className="label">Pembuktianmu</span>
           <ul>
-            {SLOTS.map((s) => {
-              const ev = evidence.find((e) => e.id === proof[s.key])
-              const ok = slotOK(s.key)
+            {slots.map((k) => {
+              const ev = evidence.find((e) => e.id === proof[k])
+              const ok = slotOK(k)
               return (
-                <li key={s.key} className={ok ? 'ok' : 'no'}>
-                  <span className="mono">{s.label}</span>
+                <li key={k} className={ok ? 'ok' : 'no'}>
+                  <span className="mono">{labelOf(k)}</span>
                   <span>{ev ? ev.title : '—'}</span>
                   <span className="mark">{ok ? '✓' : '✗'}</span>
                 </li>

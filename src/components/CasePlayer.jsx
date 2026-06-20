@@ -20,13 +20,14 @@ export default function CasePlayer({ caseData, onHome }) {
     const a = saved.accused
     return Array.isArray(a) ? a : a ? [a] : []
   })
+  const [accident, setAccident] = useState(saved.accident || false)
   const [proof, setProof] = useState(saved.proof || EMPTY_PROOF)
 
   useEffect(() => {
     writeSave(caseData.id, {
-      screen, examined, interrogated, suspicions, unlocked, accused, proof,
+      screen, examined, interrogated, suspicions, unlocked, accused, accident, proof,
     })
-  }, [caseData.id, screen, examined, interrogated, suspicions, unlocked, accused, proof])
+  }, [caseData.id, screen, examined, interrogated, suspicions, unlocked, accused, accident, proof])
 
   const go = (s) => {
     if (s === 'home') return onHome()
@@ -67,6 +68,7 @@ export default function CasePlayer({ caseData, onHome }) {
     setSuspicions({})
     setUnlocked([])
     setAccused([])
+    setAccident(false)
     setProof(EMPTY_PROOF)
     go('briefing')
   }
@@ -93,6 +95,8 @@ export default function CasePlayer({ caseData, onHome }) {
           caseData={caseData}
           accused={accused}
           setAccused={setAccused}
+          accident={accident}
+          setAccident={setAccident}
           suspicions={suspicions}
           examined={examined}
           proof={proof}
@@ -106,6 +110,7 @@ export default function CasePlayer({ caseData, onHome }) {
         <Reveal
           caseData={caseData}
           accused={accused}
+          accident={accident}
           proof={proof}
           examined={examined}
           restart={restart}
