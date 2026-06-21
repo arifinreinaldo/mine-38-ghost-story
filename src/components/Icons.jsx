@@ -230,6 +230,28 @@ export function SceneArt({ className, variant = 'mountain' }) {
             <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
           </g>
         </g>
+      ) : variant === 'toraja' ? (
+        <g>
+          {/* tongkonan + cliff graves at night */}
+          <rect x="0" y="206" width="800" height="54" fill="#10131a" />
+          <path d="M610 206 L610 70 L700 58 L724 206 Z" fill="#171c24" />
+          <rect x="640" y="112" width="14" height="20" fill="#0c0f14" />
+          <rect x="670" y="138" width="14" height="20" fill="#0c0f14" />
+          <g fill="#e08a4d" opacity="0.7">
+            <rect x="644" y="101" width="6" height="11" />
+            <rect x="674" y="127" width="6" height="11" />
+          </g>
+          <path d="M320 206 L320 176 M360 206 L360 176 M440 206 L440 176 M480 206 L480 176" stroke="#0e1116" strokeWidth="6" />
+          <rect x="312" y="150" width="176" height="40" fill="#10131a" />
+          <rect x="345" y="160" width="18" height="20" fill="#e08a4d" opacity="0.55" />
+          <rect x="437" y="160" width="18" height="20" fill="#e08a4d" opacity="0.55" />
+          <path d="M270 96 C340 156 460 156 530 96 L516 124 C456 168 344 168 284 124 Z" fill="#1a2029" />
+          <path d="M284 124 C344 168 456 168 516 124" fill="none" stroke="#2a3340" strokeWidth="2" />
+          <g transform="translate(360 200)">
+            <path d="M0 0 v-18" stroke="#9a3030" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
+          </g>
+        </g>
       ) : (
         <g>
           <path d="M-10 260 L150 150 L300 210 L470 130 L600 195 L740 120 L810 175 L810 260 Z" fill="#232c3b" opacity="0.9" />
