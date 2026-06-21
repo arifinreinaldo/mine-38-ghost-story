@@ -2,7 +2,7 @@
 export const mahameru = {
   id: 'mahameru',
   free: true,
-  difficulty: 'Sedang',
+  difficulty: 'Mudah',
   code: 'SM-2406',
   location: 'Gunung Semeru',
   scene: 'mountain',

@@ -4,7 +4,7 @@
 export const sumur = {
   id: 'sumur',
   free: false,
-  difficulty: 'Sangat Sulit',
+  difficulty: 'Sulit',
   code: 'PJ-1944',
   location: 'Kota kecil di Jawa · Pendudukan Jepang, 1944',
   scene: 'highland',

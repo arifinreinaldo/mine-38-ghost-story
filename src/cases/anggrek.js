@@ -5,7 +5,7 @@
 export const anggrek = {
   id: 'anggrek',
   free: false,
-  difficulty: 'Sulit',
+  difficulty: 'Sedang',
   code: 'WA-0726',
   location: 'Wisma Anggrek, Menteng, Jakarta',
   scene: 'estate',
