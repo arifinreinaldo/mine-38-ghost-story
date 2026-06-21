@@ -252,6 +252,32 @@ export function SceneArt({ className, variant = 'mountain' }) {
             <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
           </g>
         </g>
+      ) : variant === 'kolonial' ? (
+        <g>
+          {/* VOC trading post: harbor, tall ship & warehouse at dusk */}
+          <rect x="0" y="210" width="800" height="50" fill="#10131a" />
+          <path d="M0 212 q140 -7 280 0 t280 0 t280 0" fill="none" stroke="#222c3b" strokeWidth="2" opacity="0.7" />
+          {/* warehouse (pakhuis) with stepped Dutch gable */}
+          <rect x="118" y="150" width="150" height="60" fill="#10131a" />
+          <path d="M118 150 L118 122 L138 122 L138 106 L162 106 L162 90 L186 90 L186 106 L210 106 L210 122 L268 122 L268 150 Z" fill="#161b23" />
+          <rect x="150" y="166" width="18" height="26" fill="#e08a4d" opacity="0.55" />
+          <rect x="214" y="166" width="18" height="26" fill="#e08a4d" opacity="0.3" />
+          {/* VOC tall ship silhouette */}
+          <path d="M470 210 L702 210 L672 198 L500 198 Z" fill="#161b23" />
+          <g stroke="#1a2029" strokeWidth="3">
+            <path d="M524 198 L524 92 M588 198 L588 80 M652 198 L652 100" />
+          </g>
+          <g fill="#1a2029" opacity="0.92">
+            <path d="M524 106 L560 120 L524 134 Z" />
+            <path d="M588 94 L630 112 L588 130 Z" />
+            <path d="M652 114 L688 126 L652 140 Z" />
+          </g>
+          <path d="M588 80 L588 70 L610 74 L588 78 Z" fill="#9a3030" />
+          <g transform="translate(196 204)">
+            <path d="M0 0 v-18" stroke="#9a3030" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
+          </g>
+        </g>
       ) : (
         <g>
           <path d="M-10 260 L150 150 L300 210 L470 130 L600 195 L740 120 L810 175 L810 260 Z" fill="#232c3b" opacity="0.9" />
