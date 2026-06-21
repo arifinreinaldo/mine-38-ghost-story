@@ -5,3 +5,10 @@ export const RANKS = {
   muda: { label: 'Detektif Muda', note: 'Tuduhanmu benar, tapi rangkaian buktimu belum rapi.' },
   magang: { label: 'Masih Magang', note: 'Kau menuduh orang yang salah. Kasus ditutup keliru.' },
 }
+
+// Awarded for cracking the hidden treasure hunt (a separate achievement
+// from the detective rank).
+export const TREASURE_BADGE = {
+  label: 'Pemburu Harta',
+  note: 'Kau memecahkan sandi, melacak peta, dan menemukan harta Si Macan Kawi.',
+}

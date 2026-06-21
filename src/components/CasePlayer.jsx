@@ -4,11 +4,13 @@ import Briefing from './Briefing'
 import Investigation from './Investigation'
 import Accuse from './Accuse'
 import Reveal from './Reveal'
+import TreasureHunt from './TreasureHunt'
 
 const EMPTY_PROOF = { motive: '', means: '', opportunity: '' }
 
 // Runs one case end-to-end (briefing → investigation → accuse → reveal),
 // holding its own state and a per-case save slot. Mount with key={caseId}.
+// Cases with a `treasure` block add an optional bonus stage after the reveal.
 export default function CasePlayer({ caseData, onHome }) {
   const [saved] = useState(() => loadSave(caseData.id))
   const [screen, setScreen] = useState(saved.screen || 'briefing')
@@ -22,12 +24,15 @@ export default function CasePlayer({ caseData, onHome }) {
   })
   const [accident, setAccident] = useState(saved.accident || false)
   const [proof, setProof] = useState(saved.proof || EMPTY_PROOF)
+  const [treasureGuess, setTreasureGuess] = useState(saved.treasureGuess || '')
+  const [solvedLocks, setSolvedLocks] = useState(saved.solvedLocks || [])
 
   useEffect(() => {
     writeSave(caseData.id, {
       screen, examined, interrogated, suspicions, unlocked, accused, accident, proof,
+      treasureGuess, solvedLocks,
     })
-  }, [caseData.id, screen, examined, interrogated, suspicions, unlocked, accused, accident, proof])
+  }, [caseData.id, screen, examined, interrogated, suspicions, unlocked, accused, accident, proof, treasureGuess, solvedLocks])
 
   const go = (s) => {
     if (s === 'home') return onHome()
@@ -70,6 +75,8 @@ export default function CasePlayer({ caseData, onHome }) {
     setAccused([])
     setAccident(false)
     setProof(EMPTY_PROOF)
+    setTreasureGuess('')
+    setSolvedLocks([])
     go('briefing')
   }
 
@@ -101,6 +108,8 @@ export default function CasePlayer({ caseData, onHome }) {
           examined={examined}
           proof={proof}
           setProof={setProof}
+          treasureGuess={treasureGuess}
+          setTreasureGuess={setTreasureGuess}
           go={go}
           confirm={() => go('reveal')}
         />
@@ -113,7 +122,20 @@ export default function CasePlayer({ caseData, onHome }) {
           accident={accident}
           proof={proof}
           examined={examined}
+          treasureGuess={treasureGuess}
+          solvedLocks={solvedLocks}
           restart={restart}
+          go={go}
+          onHome={onHome}
+        />
+      )
+    case 'treasure':
+      return (
+        <TreasureHunt
+          caseData={caseData}
+          solvedLocks={solvedLocks}
+          setSolvedLocks={setSolvedLocks}
+          go={go}
           onHome={onHome}
         />
       )

@@ -278,6 +278,23 @@ export function SceneArt({ className, variant = 'mountain' }) {
             <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
           </g>
         </g>
+      ) : variant === 'kawi' ? (
+        <g>
+          {/* Putri Tidur: a reclining-woman ridgeline (head → chest → legs) */}
+          <circle cx="120" cy="66" r="3" fill="#e8e6df" opacity="0.7" />
+          <circle cx="690" cy="50" r="2" fill="#e8e6df" opacity="0.5" />
+          <path d="M-10 222 L80 184 L160 150 L230 178 L320 126 L450 154 L560 124 L660 176 L740 168 L810 200 L810 260 L-10 260 Z" fill="#232c3b" opacity="0.55" />
+          <path d="M-10 236 L52 236 C96 236 100 150 152 150 C196 150 206 200 252 200 C302 200 306 132 366 132 C396 132 402 153 422 151 C447 148 452 122 482 122 C536 122 546 206 626 206 C696 206 706 179 776 181 L810 185 L810 260 L-10 260 Z" fill="#10131a" />
+          <g fill="#e08a4d" opacity="0.5">
+            <rect x="300" y="238" width="6" height="8" />
+            <rect x="332" y="242" width="5" height="6" />
+            <rect x="506" y="240" width="6" height="7" />
+          </g>
+          <g transform="translate(482 118)">
+            <path d="M0 0 v-18" stroke="#9a3030" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
+          </g>
+        </g>
       ) : (
         <g>
           <path d="M-10 260 L150 150 L300 210 L470 130 L600 195 L740 120 L810 175 L810 260 Z" fill="#232c3b" opacity="0.9" />

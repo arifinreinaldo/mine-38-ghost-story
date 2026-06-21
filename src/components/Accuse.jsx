@@ -16,6 +16,8 @@ export default function Accuse({
   examined,
   proof,
   setProof,
+  treasureGuess,
+  setTreasureGuess,
   go,
   confirm,
 }) {
@@ -121,6 +123,32 @@ export default function Accuse({
                 </select>
               </label>
             ))}
+          </div>
+        )}
+
+        {caseData.treasure && (
+          <div className="treasure-guess">
+            <span className="eyebrow">Bonus · Teka-teki Harta</span>
+            <p className="mist" style={{ margin: '.5em 0 1.2em' }}>
+              Konon {caseData.treasure.robber.name} menyembunyikan hartanya di salah
+              satu puncak Putri Tidur. Tebak yang benar untuk membuka{' '}
+              <strong>Perburuan Harta</strong>. (opsional — tak memengaruhi tuduhanmu)
+            </p>
+            {caseData.treasure.mountains.map((m) => {
+              const picked = treasureGuess === m.id
+              return (
+                <button
+                  key={m.id}
+                  className={'peak-pick' + (picked ? ' on' : '')}
+                  aria-pressed={picked}
+                  onClick={() => setTreasureGuess(picked ? '' : m.id)}
+                >
+                  <span className="pk-name">{m.name}</span>
+                  <span className="pk-tag">{m.tag}</span>
+                  <span className="pick-mark" aria-hidden="true">{picked ? '✓' : ''}</span>
+                </button>
+              )
+            })}
           </div>
         )}
 

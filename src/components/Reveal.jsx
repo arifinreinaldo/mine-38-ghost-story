@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { RANKS } from '../lib/ranks'
+import { RANKS, TREASURE_BADGE } from '../lib/ranks'
 import { SceneArt } from './Icons'
 import Disclaimer from './Disclaimer'
 
 const DEFAULT_LABELS = { motive: 'Motif', means: 'Cara', opportunity: 'Kesempatan' }
 const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x))
 
-export default function Reveal({ caseData, accused = [], accident = false, proof = {}, examined = [], restart, onHome }) {
+export default function Reveal({ caseData, accused = [], accident = false, proof = {}, examined = [], treasureGuess = '', solvedLocks = [], restart, go, onHome }) {
   const [copied, setCopied] = useState(false)
   const { solution, suspects, evidence, reveal } = caseData
 
@@ -35,6 +35,11 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
     ? acc.map(nameOf).join(', ')
     : '— (tak ada)'
   const wronglyAccused = acc.filter((id) => !killers.includes(id))
+
+  const treasure = caseData.treasure
+  const correctPeak = treasure?.mountains.find((m) => m.correct)
+  const peakCorrect = !!treasure && treasureGuess === correctPeak?.id
+  const huntDone = !!treasure && solvedLocks.length >= treasure.hunt.locks.length
 
   const share = async () => {
     const url = (typeof window !== 'undefined' && window.location.origin) || ''
@@ -116,6 +121,43 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
         </div>
 
         <SceneArt className="scene-band closing" variant={caseData.scene} />
+
+        {treasure && (
+          <div className={'treasure-panel' + (peakCorrect ? ' unlocked' : ' sealed')}>
+            <span className="eyebrow">Teka-teki Harta · {treasure.robber.name}</span>
+            {peakCorrect ? (
+              <>
+                <p>
+                  Tebakan gunungmu tepat: <strong>{correctPeak.name}</strong> — {correctPeak.tag}.
+                </p>
+                <p className="hindsight">{treasure.hindsight}</p>
+                {huntDone ? (
+                  <>
+                    <div className="reward-badge inline">
+                      <span className="rb-coin" aria-hidden="true">★</span>
+                      <div>
+                        <span className="rank-label">{TREASURE_BADGE.label}</span>
+                        <span className="rank-note">Harta sang Macan telah kau temukan.</span>
+                      </div>
+                    </div>
+                    <button className="btn btn-ghost" onClick={() => go && go('treasure')}>
+                      🗺️ Lihat lagi Perburuan Harta
+                    </button>
+                  </>
+                ) : (
+                  <button className="btn btn-blood" onClick={() => go && go('treasure')}>
+                    🗺️ Buka Perburuan Harta
+                  </button>
+                )}
+              </>
+            ) : (
+              <p className="mist">
+                Petunjuk harta tetap terkubur. Tebak gunung yang tepat saat
+                mengulang kasus untuk membuka <strong>Perburuan Harta</strong>.
+              </p>
+            )}
+          </div>
+        )}
 
         <div className="actions">
           <button className="btn" onClick={share}>

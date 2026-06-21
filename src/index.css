@@ -1228,3 +1228,238 @@ body::after {
   outline: 2px solid var(--ember-soft);
   outline-offset: 3px;
 }
+
+/* ---- Treasure hunt (Case 11+) ---- */
+
+/* optional peak picker on the Accuse screen */
+.treasure-guess {
+  margin-top: 2.4em;
+  padding-top: 1.6em;
+  border-top: 1px dashed var(--line);
+}
+.peak-pick {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  margin-top: 10px;
+  background: var(--ash);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 14px 16px;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.peak-pick:hover {
+  border-color: var(--mist-dim);
+}
+.peak-pick.on {
+  border-color: var(--ember);
+  background: rgba(200, 100, 42, 0.1);
+}
+.peak-pick .pk-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--bone);
+}
+.peak-pick .pk-tag {
+  color: var(--mist);
+  font-size: 0.84rem;
+}
+
+/* treasure result panel on the Reveal screen */
+.treasure-panel {
+  margin: 1.6em 0 0;
+  padding: 1.3em 1.4em;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--ash);
+}
+.treasure-panel.unlocked {
+  border-color: var(--ember);
+  background: rgba(200, 100, 42, 0.08);
+}
+.treasure-panel .hindsight {
+  color: var(--mist);
+  font-style: italic;
+  margin-top: 0.6em;
+}
+.treasure-panel .btn {
+  margin-top: 1em;
+}
+
+/* the hidden hunt stage */
+.hunt-title {
+  font-family: 'Fraunces', serif;
+  margin-top: 0.2em;
+}
+.hunt-tip {
+  color: var(--mist-dim);
+  font-size: 0.86rem;
+  margin-top: 0.6em;
+}
+.legend-card {
+  margin: 1.6em 0;
+  padding: 1.1em 1.2em;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--ash);
+}
+.legend-card .legend-note {
+  font-size: 0.86rem;
+  margin: 0.3em 0 0.8em;
+}
+.legend-list {
+  list-style: none;
+  margin: 0.6em 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.legend-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.legend-list .mono {
+  min-width: 3.4em;
+  color: var(--ember-soft);
+  font-weight: 700;
+}
+.legend-list li span:last-child {
+  color: var(--mist);
+  font-size: 0.9rem;
+}
+
+.locks {
+  display: grid;
+  gap: 14px;
+  margin: 1.4em 0;
+}
+.lock {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1.1em 1.2em;
+  background: var(--coal, #14171d);
+  opacity: 0.6;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+.lock.active {
+  opacity: 1;
+  border-color: var(--ember);
+}
+.lock.solved {
+  opacity: 1;
+  border-color: var(--line);
+}
+.lock.is-locked {
+  opacity: 0.5;
+}
+.lock-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lock-kind {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ember-soft);
+}
+.lock-state {
+  font-size: 1rem;
+}
+.lock h3 {
+  font-family: 'Fraunces', serif;
+  margin: 0.3em 0 0.5em;
+}
+.lock-prompt {
+  color: var(--bone);
+  font-size: 0.94rem;
+}
+.lock-cipher {
+  margin-top: 0.8em;
+  padding: 0.7em 1em;
+  background: #0e1116;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.35em;
+  color: var(--ember-soft);
+  text-align: center;
+}
+.lock-input {
+  margin-top: 1em;
+}
+.lock-input input {
+  width: 100%;
+  background: #0e1116;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 12px 14px;
+  color: var(--bone);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+}
+.lock-input input:focus-visible {
+  outline: 2px solid var(--ember-soft);
+  outline-offset: 2px;
+}
+.lock-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.lock-reveal {
+  margin-top: 1em;
+  padding: 0.9em 1em;
+  border-left: 3px solid var(--ember);
+  background: rgba(200, 100, 42, 0.08);
+  color: var(--bone);
+  font-size: 0.92rem;
+}
+
+.reward {
+  margin-top: 2em;
+  text-align: center;
+}
+.reward h2 {
+  font-family: 'Fraunces', serif;
+  margin: 0.4em 0;
+}
+.reward-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  margin: 1em 0;
+  padding: 12px 18px;
+  border: 1px solid var(--ember);
+  border-radius: 999px;
+  background: rgba(200, 100, 42, 0.12);
+}
+.reward-badge.inline {
+  display: flex;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+.reward-badge .rb-coin {
+  font-size: 1.6rem;
+  color: var(--ember-soft);
+}
+.reward-badge .rank-label {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  color: var(--bone);
+}
+.reward-badge .rank-note {
+  display: block;
+  color: var(--mist);
+  font-size: 0.84rem;
+}
