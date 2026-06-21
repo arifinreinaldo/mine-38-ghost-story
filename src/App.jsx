@@ -10,6 +10,7 @@ import Auth from './components/Auth'
 import NextCase from './components/NextCase'
 import PwaBar from './components/PwaBar'
 import LangToggle from './components/LangToggle'
+import SoundToggle from './components/SoundToggle'
 
 export default function App() {
   const { user } = useAuth()
@@ -71,6 +72,7 @@ export default function App() {
       {screenEl}
       <PwaBar />
       <LangToggle />
+      <SoundToggle />
     </>
   )
 }

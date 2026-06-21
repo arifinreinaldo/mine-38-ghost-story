@@ -171,6 +171,11 @@ const id = {
   pwa: {
     offline: 'Mode luring — progres tetap tersimpan di perangkat.',
   },
+
+  sound: {
+    on: 'Nyalakan musik latar',
+    off: 'Matikan musik latar',
+  },
 }
 
 const en = {
@@ -339,6 +344,11 @@ const en = {
 
   pwa: {
     offline: 'Offline mode — your progress stays saved on this device.',
+  },
+
+  sound: {
+    on: 'Turn on background music',
+    off: 'Turn off background music',
   },
 }
 

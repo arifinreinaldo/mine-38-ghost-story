@@ -1502,3 +1502,38 @@ body::after {
   outline: 2px solid var(--ember-soft);
   outline-offset: 2px;
 }
+
+/* ════════ sound toggle (fixed, bottom-right) ════════ */
+.sound-toggle {
+  position: fixed;
+  right: calc(14px + env(safe-area-inset-right));
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  z-index: 7000;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(20, 23, 28, 0.82);
+  backdrop-filter: blur(8px);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.sound-toggle:hover {
+  opacity: 1;
+  border-color: var(--mist-dim);
+}
+.sound-toggle.on {
+  opacity: 1;
+  border-color: rgba(200, 100, 42, 0.5);
+  background: rgba(200, 100, 42, 0.12);
+}
+.sound-toggle:focus-visible {
+  outline: 2px solid var(--ember-soft);
+  outline-offset: 2px;
+}
