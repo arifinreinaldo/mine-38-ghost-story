@@ -1,20 +1,24 @@
 import { useAuth } from '../auth/AuthProvider'
+import { useLang, useUI } from '../i18n/LangProvider'
+import { localize } from '../i18n/L'
 import { setIntent } from '../lib/intent'
 import { gatedCases } from '../cases'
 import { hasProgress } from '../lib/save'
 
 export default function NextCase({ go, play }) {
   const { configured, user, loading } = useAuth()
+  const { lang } = useLang()
+  const ui = useUI()
 
   const intro = !configured
-    ? 'Kasus-kasus ini terbuka setelah registrasi diaktifkan.'
+    ? ui.next.introPreview
     : user
-    ? 'Akun terverifikasi. Pilih kasus untuk mulai.'
-    : 'Masuk atau daftar gratis untuk membuka kasus-kasus ini — kamu akan langsung kembali ke sini.'
+    ? ui.next.introUser
+    : ui.next.introGuest
 
   const cardButton = (c) => {
-    if (!configured) return <p className="locked-hint">Segera hadir</p>
-    if (loading) return <p className="mist">Memuat…</p>
+    if (!configured) return <p className="locked-hint">{ui.next.comingSoon}</p>
+    if (loading) return <p className="mist">{ui.auth.busy}</p>
     if (!user)
       return (
         <button
@@ -24,41 +28,44 @@ export default function NextCase({ go, play }) {
             go('auth')
           }}
         >
-          Masuk untuk membuka →
+          {ui.next.signInToOpen}
         </button>
       )
     return (
       <button className="btn btn-blood" onClick={() => play(c.id)}>
-        {hasProgress(c.id) ? 'Lanjutkan →' : 'Mulai Kasus →'}
+        {hasProgress(c.id) ? ui.next.resume : ui.next.start}
       </button>
     )
   }
 
   return (
-    <section className="screen" aria-label="Kasus terkunci">
+    <section className="screen" aria-label={ui.next.aria}>
       <div className="wrap pad">
         <button className="link-back" onClick={() => go('home')}>
-          ← Beranda
+          {ui.common.backHome}
         </button>
         <div className="section-head">
-          <span className="eyebrow">Berkas Terkunci</span>
-          <h2>Kasus lainnya</h2>
+          <span className="eyebrow">{ui.next.eyebrow}</span>
+          <h2>{ui.next.heading}</h2>
         </div>
         <p className="mist" style={{ marginBottom: '2em' }}>
           {intro}
         </p>
 
-        {gatedCases.map((c) => (
-          <div className="card lock-card case-row" key={c.id}>
-            <span className="label">
-              Tingkat {c.difficulty}
-              {hasProgress(c.id) ? ' · tersimpan' : ''}
-            </span>
-            <h3 style={{ fontSize: '1.25rem', margin: '.25em 0 .4em' }}>{c.title}</h3>
-            <p style={{ color: 'var(--mist)', marginBottom: '1.1em' }}>{c.blurb}</p>
-            {cardButton(c)}
-          </div>
-        ))}
+        {gatedCases.map((raw) => {
+          const c = localize(raw, lang)
+          return (
+            <div className="card lock-card case-row" key={c.id}>
+              <span className="label">
+                {ui.next.level(ui.difficulty[c.difficulty] || c.difficulty)}
+                {hasProgress(c.id) ? ` · ${ui.next.saved}` : ''}
+              </span>
+              <h3 style={{ fontSize: '1.25rem', margin: '.25em 0 .4em' }}>{c.title}</h3>
+              <p style={{ color: 'var(--mist)', marginBottom: '1.1em' }}>{c.blurb}</p>
+              {cardButton(c)}
+            </div>
+          )
+        })}
       </div>
     </section>
   )

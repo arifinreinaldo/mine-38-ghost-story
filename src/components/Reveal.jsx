@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { RANKS, TREASURE_BADGE } from '../lib/ranks'
+import { useLang, useUI } from '../i18n/LangProvider'
+import { localize } from '../i18n/L'
 import { SceneArt } from './Icons'
 import Disclaimer from './Disclaimer'
 
-const DEFAULT_LABELS = { motive: 'Motif', means: 'Cara', opportunity: 'Kesempatan' }
 const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x))
 
 export default function Reveal({ caseData, accused = [], accident = false, proof = {}, examined = [], treasureGuess = '', solvedLocks = [], restart, go, onHome }) {
+  const ui = useUI()
+  const { lang } = useLang()
   const [copied, setCopied] = useState(false)
   const { solution, suspects, evidence, reveal } = caseData
 
@@ -14,7 +17,7 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
   const killers = solution.killers || (solution.killer ? [solution.killer] : [])
   const acc = Array.isArray(accused) ? accused : accused ? [accused] : []
   const nameOf = (id) => suspects.find((s) => s.id === id)?.name ?? '—'
-  const labelOf = (k) => solution.proofLabels?.[k]?.label || DEFAULT_LABELS[k]
+  const labelOf = (k) => solution.proofLabels?.[k]?.label || ui.proofDefault[k]
 
   const correct = accidentCase ? accident && acc.length === 0 : !accident && sameSet(acc, killers)
   const slots = ['motive', 'means', 'opportunity']
@@ -27,13 +30,14 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
   if (correct) {
     rankKey = proofScore === 3 && foundTwist ? 'utama' : proofScore >= 2 ? 'inspektur' : 'muda'
   }
-  const rank = RANKS[rankKey]
+  const rank = localize(RANKS[rankKey], lang)
+  const badge = localize(TREASURE_BADGE, lang)
 
   const chosenLabel = accident
-    ? 'sebuah kecelakaan — bukan pembunuhan'
+    ? ui.reveal.chosenAccident
     : acc.length
     ? acc.map(nameOf).join(', ')
-    : '— (tak ada)'
+    : ui.reveal.chosenNone
   const wronglyAccused = acc.filter((id) => !killers.includes(id))
 
   const treasure = caseData.treasure
@@ -43,7 +47,7 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
 
   const share = async () => {
     const url = (typeof window !== 'undefined' && window.location.origin) || ''
-    const text = `Aku menuntaskan "${caseData.title}" — peringkat: ${rank.label}. Berani memecahkan kasusnya?`
+    const text = ui.reveal.shareText(caseData.title, rank.label)
     try {
       if (navigator.share) await navigator.share({ title: caseData.title, text, url })
       else {
@@ -57,13 +61,13 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
   }
 
   return (
-    <section className="screen" aria-label="Pengungkapan">
+    <section className="screen" aria-label={ui.reveal.aria}>
       <div className="wrap pad">
         <span className="eyebrow">
-          {correct ? 'Pengungkapan · Kasus terpecahkan' : 'Pengungkapan · Tuduhan salah'}
+          {correct ? ui.reveal.eyebrowRight : ui.reveal.eyebrowWrong}
         </span>
         <div className={'verdict ' + (correct ? 'right' : 'wrong')}>
-          {correct ? 'Tepat.' : 'Belum tepat.'}
+          {correct ? ui.reveal.verdictRight : ui.reveal.verdictWrong}
         </div>
 
         <div className={'rank-chip ' + (correct ? 'right' : 'wrong')}>
@@ -74,13 +78,12 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
         <div className="solution">
           {correct ? (
             <p>
-              Kesimpulan Anda: <strong>{chosenLabel}</strong> — dan Anda benar.
+              {ui.reveal.conclLead}<strong>{chosenLabel}</strong>{ui.reveal.conclRightTail}
             </p>
           ) : (
             <>
               <p>
-                Kesimpulan Anda: <strong>{chosenLabel}</strong>. Tapi kebenarannya
-                berbeda.
+                {ui.reveal.conclLead}<strong>{chosenLabel}</strong>{ui.reveal.conclWrongTail}
               </p>
               {wronglyAccused.map((id) =>
                 reveal.rebuttals[id] ? (
@@ -89,7 +92,7 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
                   </p>
                 ) : null
               )}
-              <p>Inilah yang sebenarnya terjadi.</p>
+              <p>{ui.reveal.whatHappened}</p>
             </>
           )}
 
@@ -104,7 +107,7 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
         </div>
 
         <div className="proof-recap">
-          <span className="label">Pembuktianmu</span>
+          <span className="label">{ui.reveal.proofRecap}</span>
           <ul>
             {slots.map((k) => {
               const ev = evidence.find((e) => e.id === proof[k])
@@ -124,11 +127,11 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
 
         {treasure && (
           <div className={'treasure-panel' + (peakCorrect ? ' unlocked' : ' sealed')}>
-            <span className="eyebrow">Teka-teki Harta · {treasure.robber.name}</span>
+            <span className="eyebrow">{ui.reveal.treasureEyebrow(treasure.robber.name)}</span>
             {peakCorrect ? (
               <>
                 <p>
-                  Tebakan gunungmu tepat: <strong>{correctPeak.name}</strong> — {correctPeak.tag}.
+                  {ui.reveal.peakRightLead}<strong>{correctPeak.name}</strong> — {correctPeak.tag}.
                 </p>
                 <p className="hindsight">{treasure.hindsight}</p>
                 {huntDone ? (
@@ -136,39 +139,36 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
                     <div className="reward-badge inline">
                       <span className="rb-coin" aria-hidden="true">★</span>
                       <div>
-                        <span className="rank-label">{TREASURE_BADGE.label}</span>
-                        <span className="rank-note">Harta sang Macan telah kau temukan.</span>
+                        <span className="rank-label">{badge.label}</span>
+                        <span className="rank-note">{ui.reveal.badgeFoundNote}</span>
                       </div>
                     </div>
                     <button className="btn btn-ghost" onClick={() => go && go('treasure')}>
-                      🗺️ Lihat lagi Perburuan Harta
+                      {ui.reveal.viewHuntAgain}
                     </button>
                   </>
                 ) : (
                   <button className="btn btn-blood" onClick={() => go && go('treasure')}>
-                    🗺️ Buka Perburuan Harta
+                    {ui.reveal.openHunt}
                   </button>
                 )}
               </>
             ) : (
-              <p className="mist">
-                Petunjuk harta tetap terkubur. Tebak gunung yang tepat saat
-                mengulang kasus untuk membuka <strong>Perburuan Harta</strong>.
-              </p>
+              <p className="mist">{ui.reveal.sealed}</p>
             )}
           </div>
         )}
 
         <div className="actions">
           <button className="btn" onClick={share}>
-            {copied ? '✓ Tautan disalin' : 'Bagikan hasil'}
+            {copied ? ui.reveal.shareCopied : ui.reveal.share}
           </button>
           <button className="btn btn-ghost" onClick={restart}>
-            ↺ Ulangi dari awal
+            {ui.reveal.restart}
           </button>
           {onHome && (
             <button className="btn btn-ghost" onClick={onHome}>
-              Beranda
+              {ui.common.home}
             </button>
           )}
         </div>

@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useAuth } from '../auth/AuthProvider'
+import { useUI } from '../i18n/LangProvider'
 
 export default function Auth({ go }) {
   const { configured, signIn, signUp, signInWithMagicLink } = useAuth()
+  const ui = useUI()
   const [mode, setMode] = useState('signin') // 'signin' | 'signup'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,8 +23,7 @@ export default function Auth({ go }) {
       } else {
         const { data, error } = await signUp(email, password)
         if (error) setMsg({ type: 'error', text: error.message })
-        else if (!data.session)
-          setMsg({ type: 'info', text: 'Cek email untuk konfirmasi akun, lalu masuk.' })
+        else if (!data.session) setMsg({ type: 'info', text: ui.auth.confirmEmail })
         // session created → App resumes the intended screen
       }
     } finally {
@@ -32,7 +33,7 @@ export default function Auth({ go }) {
 
   const magic = async () => {
     if (!email) {
-      setMsg({ type: 'error', text: 'Isi email dulu.' })
+      setMsg({ type: 'error', text: ui.auth.fillEmail })
       return
     }
     setMsg(null)
@@ -42,7 +43,7 @@ export default function Auth({ go }) {
       setMsg(
         error
           ? { type: 'error', text: error.message }
-          : { type: 'info', text: 'Tautan masuk dikirim ke emailmu.' }
+          : { type: 'info', text: ui.auth.magicSent }
       )
     } finally {
       setBusy(false)
@@ -50,29 +51,24 @@ export default function Auth({ go }) {
   }
 
   return (
-    <section className="screen" aria-label="Masuk">
+    <section className="screen" aria-label={ui.auth.aria}>
       <div className="wrap pad auth-wrap">
         <button className="link-back" onClick={() => go('cover')}>
-          ← Kembali
+          {ui.common.back}
         </button>
         <div className="section-head">
-          <span className="eyebrow">Akun</span>
-          <h2>{mode === 'signin' ? 'Masuk' : 'Daftar'}</h2>
+          <span className="eyebrow">{ui.auth.eyebrow}</span>
+          <h2>{mode === 'signin' ? ui.auth.signin : ui.auth.signup}</h2>
         </div>
         <p className="mist" style={{ marginBottom: '1.8em' }}>
-          Daftar gratis untuk membuka kasus berikutnya begitu rilis.
+          {ui.auth.lead}
         </p>
 
-        {!configured && (
-          <p className="auth-msg info">
-            Mode pratinjau: autentikasi belum dikonfigurasi (atur
-            VITE_SUPABASE_URL &amp; VITE_SUPABASE_ANON_KEY).
-          </p>
-        )}
+        {!configured && <p className="auth-msg info">{ui.auth.preview}</p>}
 
         <form onSubmit={submit} className="auth-form">
           <label className="field">
-            <span>Email</span>
+            <span>{ui.auth.email}</span>
             <input
               type="email"
               autoComplete="email"
@@ -82,7 +78,7 @@ export default function Auth({ go }) {
             />
           </label>
           <label className="field">
-            <span>Kata sandi</span>
+            <span>{ui.auth.password}</span>
             <input
               type="password"
               autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
@@ -94,7 +90,7 @@ export default function Auth({ go }) {
           </label>
           {msg && <p className={'auth-msg ' + msg.type}>{msg.text}</p>}
           <button className="btn" type="submit" disabled={busy || !configured}>
-            {busy ? '…' : mode === 'signin' ? 'Masuk' : 'Daftar'}
+            {busy ? ui.auth.busy : mode === 'signin' ? ui.auth.signin : ui.auth.signup}
           </button>
         </form>
 
@@ -103,11 +99,11 @@ export default function Auth({ go }) {
           onClick={magic}
           disabled={busy || !configured}
         >
-          Kirim tautan masuk (tanpa sandi)
+          {ui.auth.magic}
         </button>
 
         <p className="auth-toggle">
-          {mode === 'signin' ? 'Belum punya akun?' : 'Sudah punya akun?'}{' '}
+          {mode === 'signin' ? ui.auth.noAccount : ui.auth.haveAccount}{' '}
           <button
             type="button"
             onClick={() => {
@@ -115,7 +111,7 @@ export default function Auth({ go }) {
               setMsg(null)
             }}
           >
-            {mode === 'signin' ? 'Daftar' : 'Masuk'}
+            {mode === 'signin' ? ui.auth.signup : ui.auth.signin}
           </button>
         </p>
       </div>

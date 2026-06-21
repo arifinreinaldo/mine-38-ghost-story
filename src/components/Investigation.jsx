@@ -1,14 +1,11 @@
 import { useState } from 'react'
 import { EvidenceIcon, Silhouette, SceneArt } from './Icons'
+import { useUI } from '../i18n/LangProvider'
 
-const TABS = [
-  { id: 'korban', label: 'Korban' },
-  { id: 'bukti', label: 'Bukti' },
-  { id: 'saksi', label: 'Saksi & Tersangka' },
-  { id: 'linimasa', label: 'Linimasa' },
-]
+const TAB_IDS = ['korban', 'bukti', 'saksi', 'linimasa']
 
 function EvidenceItem({ item, seen, onExamine }) {
+  const ui = useUI()
   const [open, setOpen] = useState(false)
   const toggle = () => {
     const next = !open
@@ -30,7 +27,7 @@ function EvidenceItem({ item, seen, onExamine }) {
       </div>
       <h3>
         {item.title}
-        {item.twist && !seen && <span className="badge-new">Baru</span>}
+        {item.twist && !seen && <span className="badge-new">{ui.investigation.newBadge}</span>}
         <span className="examined-dot" />
       </h3>
       <p className="ev-sum">{item.summary}</p>
@@ -44,6 +41,7 @@ function EvidenceItem({ item, seen, onExamine }) {
 }
 
 function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion, examined }) {
+  const ui = useUI()
   const available = s.interrogation
     .map((qa, i) => ({ qa, i }))
     .filter(({ qa }) => !qa.requires || examined.includes(qa.requires))
@@ -59,25 +57,23 @@ function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion, examin
         <div>
           <div className="name">
             {s.name}
-            {suspected && <span className="flag">Dicurigai</span>}
+            {suspected && <span className="flag">{ui.investigation.suspected}</span>}
           </div>
-          <div className="role">
-            {s.age} tahun · {s.role}
-          </div>
+          <div className="role">{ui.investigation.meta(s.age, s.role)}</div>
         </div>
       </div>
 
       <p className="stmt">{s.statement}</p>
 
       <dl>
-        <dt>Motif</dt>
+        <dt>{ui.investigation.motive}</dt>
         <dd>{s.motive}</dd>
-        <dt>Alibi</dt>
+        <dt>{ui.investigation.alibi}</dt>
         <dd>{s.alibi}</dd>
       </dl>
 
       <div className="interrogation">
-        <span className="label">Interogasi</span>
+        <span className="label">{ui.investigation.interrogation}</span>
         {available.map(({ qa, i }) => {
           const isAsked = asked.includes(i)
           return (
@@ -94,27 +90,21 @@ function SuspectCard({ s, asked, askQuestion, suspected, toggleSuspicion, examin
                 <p className="q-ans">
                   {qa.a}
                   {qa.unlocks && (
-                    <span className="unlock-note">
-                      Bukti baru terbuka — periksa tab “Bukti”.
-                    </span>
+                    <span className="unlock-note">{ui.investigation.unlockNote}</span>
                   )}
                 </p>
               )}
             </div>
           )
         })}
-        {hiddenCount > 0 && (
-          <p className="locked-hint">
-            Pertanyaan lain bisa terbuka begitu kau menemukan bukti terkait.
-          </p>
-        )}
+        {hiddenCount > 0 && <p className="locked-hint">{ui.investigation.hiddenHint}</p>}
       </div>
 
       <button
         className={'suspicion-toggle' + (suspected ? ' on' : '')}
         onClick={() => toggleSuspicion(s.id)}
       >
-        {suspected ? '✓ Ditandai mencurigakan' : 'Tandai mencurigakan'}
+        {suspected ? ui.investigation.marked : ui.investigation.mark}
       </button>
     </div>
   )
@@ -132,6 +122,7 @@ export default function Investigation({
   canAccuse,
   go,
 }) {
+  const ui = useUI()
   const [tab, setTab] = useState('korban')
   const { suspects, timeline, victim } = caseData
 
@@ -141,20 +132,20 @@ export default function Investigation({
   const examinedCount = visibleEvidence.filter((e) => examined.includes(e.id)).length
 
   return (
-    <section className="screen" aria-label="Investigasi">
+    <section className="screen" aria-label={ui.investigation.aria}>
       <div className="wrap pad">
         <button className="link-back" onClick={() => go('home')}>
-          ← Beranda
+          {ui.common.backHome}
         </button>
-        <div className="seg" role="tablist" aria-label="Bagian berkas">
-          {TABS.map((t) => (
+        <div className="seg" role="tablist" aria-label={ui.investigation.segAria}>
+          {TAB_IDS.map((id) => (
             <button
-              key={t.id}
+              key={id}
               role="tab"
-              aria-selected={tab === t.id}
-              onClick={() => setTab(t.id)}
+              aria-selected={tab === id}
+              onClick={() => setTab(id)}
             >
-              {t.label}
+              {ui.investigation.tabs[id]}
             </button>
           ))}
         </div>
@@ -162,7 +153,7 @@ export default function Investigation({
         {tab === 'korban' && (
           <div className="tabpanel">
             <SceneArt className="scene-band" variant={caseData.scene} />
-            <span className="eyebrow">Korban</span>
+            <span className="eyebrow">{ui.investigation.victim}</span>
             <div className="dossier-row">
               <div className="avatar">
                 <Silhouette />
@@ -185,7 +176,7 @@ export default function Investigation({
 
         {tab === 'bukti' && (
           <div className="tabpanel">
-            <span className="eyebrow">Bukti — ketuk untuk memeriksa</span>
+            <span className="eyebrow">{ui.investigation.evidenceHint}</span>
             <div style={{ marginTop: '1.4em' }}>
               {visibleEvidence.map((e) => (
                 <EvidenceItem
@@ -201,7 +192,7 @@ export default function Investigation({
 
         {tab === 'saksi' && (
           <div className="tabpanel">
-            <span className="eyebrow">Saksi & Tersangka</span>
+            <span className="eyebrow">{ui.investigation.witnesses}</span>
             <div style={{ marginTop: '1.4em' }}>
               {suspects.map((s) => (
                 <SuspectCard
@@ -220,7 +211,7 @@ export default function Investigation({
 
         {tab === 'linimasa' && (
           <div className="tabpanel">
-            <span className="eyebrow">Linimasa</span>
+            <span className="eyebrow">{ui.investigation.timeline}</span>
             <ul className="tl" style={{ marginTop: '1.6em' }}>
               {timeline.map((e, i) => (
                 <li key={i} className={e.key ? 'key' : ''}>
@@ -234,8 +225,12 @@ export default function Investigation({
 
         <hr className="rule" />
         <p className="progress">
-          Bukti diperiksa: {examinedCount}/{visibleEvidence.length} · Saksi
-          diinterogasi: {interrogatedCount}/{suspects.length}
+          {ui.investigation.progress(
+            examinedCount,
+            visibleEvidence.length,
+            interrogatedCount,
+            suspects.length
+          )}
         </p>
         <div className="actions">
           <button
@@ -247,14 +242,10 @@ export default function Investigation({
               cursor: canAccuse ? 'pointer' : 'not-allowed',
             }}
           >
-            Ajukan Tuduhan →
+            {ui.investigation.accuse}
           </button>
         </div>
-        {!canAccuse && (
-          <p className="gate-msg">
-            Periksa semua bukti dan interogasi setiap saksi sebelum menuduh.
-          </p>
-        )}
+        {!canAccuse && <p className="gate-msg">{ui.investigation.gate}</p>}
       </div>
     </section>
   )

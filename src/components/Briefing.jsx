@@ -1,17 +1,19 @@
 import { SceneArt } from './Icons'
+import { useUI } from '../i18n/LangProvider'
 
 export default function Briefing({ caseData, go }) {
   const { briefing } = caseData
+  const ui = useUI()
   return (
-    <section className="screen" aria-label="Pengarahan">
+    <section className="screen" aria-label={ui.briefing.aria}>
       <div className="wrap pad">
         <button className="link-back" onClick={() => go('home')}>
-          ← Beranda
+          {ui.common.backHome}
         </button>
         <SceneArt className="scene-band" variant={caseData.scene} />
         <div className="section-head">
-          <span className="eyebrow">Pengarahan · {caseData.code}</span>
-          <h2>Apa yang kita tahu</h2>
+          <span className="eyebrow">{ui.briefing.eyebrow} · {caseData.code}</span>
+          <h2>{ui.briefing.heading}</h2>
         </div>
 
         {briefing.paras.map((p, i) => (
@@ -27,13 +29,11 @@ export default function Briefing({ caseData, go }) {
 
         <div className="actions">
           <button className="btn" onClick={() => go('investigation')}>
-            Mulai Investigasi →
+            {ui.briefing.start}
           </button>
         </div>
 
-        <p className="fiction-note">
-          Cerita fiksi. Tokoh, nama, dan kejadian sepenuhnya rekaan.
-        </p>
+        <p className="fiction-note">{ui.briefing.fiction}</p>
       </div>
     </section>
   )

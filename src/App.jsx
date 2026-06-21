@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAuth } from './auth/AuthProvider'
+import { useLang } from './i18n/LangProvider'
+import { localize } from './i18n/L'
 import { getIntent, clearIntent } from './lib/intent'
 import { freeCase, getCase } from './cases'
 import Cover from './components/Cover'
@@ -7,11 +9,22 @@ import CasePlayer from './components/CasePlayer'
 import Auth from './components/Auth'
 import NextCase from './components/NextCase'
 import PwaBar from './components/PwaBar'
+import LangToggle from './components/LangToggle'
 
 export default function App() {
   const { user } = useAuth()
+  const { lang } = useLang()
   const [view, setView] = useState('home') // 'home' | 'auth' | 'next' | 'play'
   const [activeCaseId, setActiveCaseId] = useState(freeCase.id)
+
+  // Resolve the active case into the chosen language once, here at the
+  // boundary, so every screen keeps reading plain fields. Changing language
+  // mid-case re-localizes without unmounting (key is the id), so progress
+  // is preserved.
+  const localizedCase = useMemo(
+    () => localize(getCase(activeCaseId), lang),
+    [activeCaseId, lang]
+  )
 
   const go = (v) => {
     setView(v)
@@ -46,7 +59,7 @@ export default function App() {
       break
     case 'play':
       screenEl = (
-        <CasePlayer key={activeCaseId} caseData={getCase(activeCaseId)} onHome={() => go('home')} />
+        <CasePlayer key={activeCaseId} caseData={localizedCase} onHome={() => go('home')} />
       )
       break
     default:
@@ -57,6 +70,7 @@ export default function App() {
     <>
       {screenEl}
       <PwaBar />
+      <LangToggle />
     </>
   )
 }

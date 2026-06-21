@@ -1,10 +1,5 @@
 import { Silhouette } from './Icons'
-
-const DEFAULT_LABELS = {
-  motive: { label: 'Motif', hint: 'Apa yang mendorong mereka?' },
-  means: { label: 'Cara', hint: 'Bagaimana ia dilakukan?' },
-  opportunity: { label: 'Kesempatan', hint: 'Siapa yang bisa?' },
-}
+import { useUI } from '../i18n/LangProvider'
 
 export default function Accuse({
   caseData,
@@ -21,11 +16,12 @@ export default function Accuse({
   go,
   confirm,
 }) {
+  const ui = useUI()
   const labels = caseData.solution.proofLabels || {}
   const SLOTS = ['motive', 'means', 'opportunity'].map((k) => ({
     key: k,
-    label: labels[k]?.label || DEFAULT_LABELS[k].label,
-    hint: labels[k]?.hint || DEFAULT_LABELS[k].hint,
+    label: labels[k]?.label || ui.accuse.proof[k].label,
+    hint: labels[k]?.hint || ui.accuse.proof[k].hint,
   }))
 
   const options = caseData.evidence.filter((e) => examined.includes(e.id))
@@ -45,15 +41,16 @@ export default function Accuse({
   }
 
   return (
-    <section className="screen" aria-label="Tuduhan">
+    <section className="screen" aria-label={ui.accuse.aria}>
       <div className="wrap pad">
         <div className="section-head">
-          <span className="eyebrow">Tuduhan</span>
-          <h2>Siapa pembunuhnya?</h2>
+          <span className="eyebrow">{ui.accuse.eyebrow}</span>
+          <h2>{ui.accuse.heading}</h2>
         </div>
         <p className="mist" style={{ marginBottom: '2em' }}>
-          Pilih tersangka — <strong>bisa lebih dari satu</strong> — atau simpulkan
-          bahwa ini bukan pembunuhan. Lalu susun pembuktianmu.
+          {ui.accuse.lead1}
+          <strong>{ui.accuse.leadStrong}</strong>
+          {ui.accuse.lead2}
         </p>
 
         <div>
@@ -73,7 +70,7 @@ export default function Accuse({
                 <div>
                   <div className="name">
                     {s.name}
-                    {suspicions[s.id] && <span className="flag">Dicurigai</span>}
+                    {suspicions[s.id] && <span className="flag">{ui.investigation.suspected}</span>}
                   </div>
                   <div className="role">{s.role}</div>
                 </div>
@@ -90,19 +87,16 @@ export default function Accuse({
             onClick={toggleAccident}
           >
             <span className="va-ic" aria-hidden="true">⚖</span>
-            <span className="va-text">
-              Bukan pembunuhan — kematian ini sebuah kecelakaan
-            </span>
+            <span className="va-text">{ui.accuse.accident}</span>
             <span className="pick-mark" aria-hidden="true">{accident ? '✓' : ''}</span>
           </button>
         </div>
 
         {hasVerdict && (
           <div className="deduction">
-            <span className="eyebrow">Susun pembuktian</span>
+            <span className="eyebrow">{ui.accuse.buildEyebrow}</span>
             <p className="mist" style={{ margin: '.6em 0 1.4em' }}>
-              Tunjuk satu bukti untuk tiap unsur. Inilah yang membedakan tebakan
-              dari deduksi.
+              {ui.accuse.buildLead}
             </p>
             {SLOTS.map((slot) => (
               <label key={slot.key} className="proof-slot">
@@ -114,7 +108,7 @@ export default function Accuse({
                   value={proof[slot.key]}
                   onChange={(e) => setSlot(slot.key, e.target.value)}
                 >
-                  <option value="">— pilih bukti —</option>
+                  <option value="">{ui.accuse.pickEvidence}</option>
                   {options.map((o) => (
                     <option key={o.id} value={o.id}>
                       {o.title}
@@ -128,11 +122,11 @@ export default function Accuse({
 
         {caseData.treasure && (
           <div className="treasure-guess">
-            <span className="eyebrow">Bonus · Teka-teki Harta</span>
+            <span className="eyebrow">{ui.accuse.treasureEyebrow}</span>
             <p className="mist" style={{ margin: '.5em 0 1.2em' }}>
-              Konon {caseData.treasure.robber.name} menyembunyikan hartanya di salah
-              satu puncak Putri Tidur. Tebak yang benar untuk membuka{' '}
-              <strong>Perburuan Harta</strong>. (opsional — tak memengaruhi tuduhanmu)
+              {ui.accuse.treasureLead1(caseData.treasure.robber.name)}
+              <strong>{ui.accuse.treasureHunt}</strong>
+              {ui.accuse.treasureLead2}
             </p>
             {caseData.treasure.mountains.map((m) => {
               const picked = treasureGuess === m.id
@@ -154,7 +148,7 @@ export default function Accuse({
 
         <div className="actions">
           <button className="btn btn-ghost" onClick={() => go('investigation')}>
-            ← Periksa lagi
+            {ui.accuse.reexamine}
           </button>
           <button
             className="btn btn-blood"
@@ -165,14 +159,10 @@ export default function Accuse({
               cursor: ready ? 'pointer' : 'not-allowed',
             }}
           >
-            Kunci Tuduhan
+            {ui.accuse.lock}
           </button>
         </div>
-        {hasVerdict && !proofComplete && (
-          <p className="gate-msg">
-            Lengkapi ketiga unsur pembuktian sebelum mengunci tuduhan.
-          </p>
-        )}
+        {hasVerdict && !proofComplete && <p className="gate-msg">{ui.accuse.gate}</p>}
       </div>
     </section>
   )
