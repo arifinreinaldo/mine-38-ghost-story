@@ -295,6 +295,39 @@ export function SceneArt({ className, variant = 'mountain' }) {
             <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
           </g>
         </g>
+      ) : variant === 'kota' ? (
+        <g>
+          {/* Jakarta under smoke, May 1998 — a sombre skyline, distant fires */}
+          <rect x="0" y="150" width="800" height="110" fill="url(#sceneWarm)" opacity="0.45" />
+          {/* far skyline */}
+          <path d="M-10 196 L40 196 L40 150 L96 150 L96 174 L150 174 L150 128 L208 128 L208 168 L286 168 L286 116 L334 116 L334 166 L404 166 L404 138 L470 138 L470 170 L540 170 L540 132 L612 132 L612 176 L684 176 L684 150 L742 150 L742 186 L810 186 L810 260 L-10 260 Z" fill="#161b23" />
+          {/* dim + a few lit windows on the far towers */}
+          <g fill="#e08a4d">
+            <rect x="106" y="158" width="7" height="9" opacity="0.45" />
+            <rect x="118" y="158" width="7" height="9" opacity="0.2" />
+            <rect x="294" y="128" width="7" height="10" opacity="0.4" />
+            <rect x="306" y="146" width="7" height="10" opacity="0.25" />
+            <rect x="412" y="148" width="7" height="10" opacity="0.35" />
+            <rect x="548" y="142" width="7" height="10" opacity="0.4" />
+            <rect x="620" y="146" width="7" height="10" opacity="0.22" />
+          </g>
+          {/* near blocks */}
+          <path d="M-10 210 L74 210 L74 180 L156 180 L156 204 L252 204 L252 170 L342 170 L342 200 L470 200 L470 184 L562 184 L562 206 L660 206 L660 190 L762 190 L762 210 L810 210 L810 260 L-10 260 Z" fill="#10131a" />
+          {/* smoke plumes rising behind the towers */}
+          <g fill="none" stroke="#2a3340" strokeWidth="12" strokeLinecap="round" opacity="0.4">
+            <path d="M208 128 q-20 -36 6 -70 q-22 -30 4 -60" />
+            <path d="M470 138 q22 -30 -4 -62 q20 -28 -2 -56" />
+            <path d="M684 150 q16 -28 -6 -54" />
+          </g>
+          {/* low ember haze along the rooftops — distant fire */}
+          <rect x="0" y="150" width="800" height="22" fill="#c8642a" opacity="0.13" />
+          {/* crime-scene marker */}
+          <g transform="translate(372 194)">
+            <path d="M0 0 v-22" stroke="#9a3030" strokeWidth="2.4" strokeLinecap="round" />
+            <path d="M0 -22 L15 -17 L0 -12 Z" fill="#9a3030" />
+            <circle cx="0" cy="2" r="2.2" fill="#9a3030" />
+          </g>
+        </g>
       ) : (
         <g>
           <path d="M-10 260 L150 150 L300 210 L470 130 L600 195 L740 120 L810 175 L810 260 Z" fill="#232c3b" opacity="0.9" />

@@ -9,9 +9,10 @@ import { sumur } from './sumur'
 import { toraja } from './toraja'
 import { banten } from './banten'
 import { macankawi } from './macankawi'
+import { mei98 } from './mei98'
 
-export const cases = { mahameru, kencana, mutiara, garut, anggrek, tjandi, upacara, sumur, toraja, banten, macankawi }
-export const caseList = [mahameru, kencana, mutiara, garut, anggrek, tjandi, upacara, sumur, toraja, banten, macankawi]
+export const cases = { mahameru, kencana, mutiara, garut, anggrek, tjandi, upacara, sumur, toraja, banten, macankawi, mei98 }
+export const caseList = [mahameru, kencana, mutiara, garut, anggrek, tjandi, upacara, sumur, toraja, banten, macankawi, mei98]
 export const freeCase = mahameru
 export const gatedCases = caseList.filter((c) => !c.free)
 export const gatedCase = gatedCases[0] // first locked case (teaser fallback)
