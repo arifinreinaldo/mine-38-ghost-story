@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { start, stop, supported } from '../audio/ambient'
+import { setEnabled, supported } from '../audio/ambient'
 import { useUI } from '../i18n/LangProvider'
 
 // Eerie background music control. Default ON, but the browser blocks audio
@@ -19,7 +19,7 @@ export default function SoundToggle() {
     if (!supported() || !prefOn()) return
     const kick = () => {
       cleanup()
-      if (prefOn()) start() // re-check: user may have toggled off meanwhile
+      if (prefOn()) setEnabled(true) // re-check: user may have toggled off meanwhile
     }
     const cleanup = () => {
       window.removeEventListener('pointerdown', kick)
@@ -38,8 +38,7 @@ export default function SoundToggle() {
     const next = !on
     setOn(next)
     try { localStorage.setItem(KEY, next ? 'on' : 'off') } catch { /* ignore */ }
-    if (next) start() // this click is the user gesture
-    else stop()
+    setEnabled(next) // this click is the user gesture
   }
 
   const label = on ? ui.sound.off : ui.sound.on

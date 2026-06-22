@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useAuth } from './auth/AuthProvider'
 import { useLang } from './i18n/LangProvider'
 import { localize } from './i18n/L'
+import { setTheme } from './audio/ambient'
 import { getIntent, clearIntent } from './lib/intent'
 import { freeCase, getCase } from './cases'
 import Cover from './components/Cover'
@@ -26,6 +27,11 @@ export default function App() {
     () => localize(getCase(activeCaseId), lang),
     [activeCaseId, lang]
   )
+
+  // Each story has its own ambient theme; the cover and menus use the default.
+  useEffect(() => {
+    setTheme(view === 'play' ? activeCaseId : 'default')
+  }, [view, activeCaseId])
 
   const go = (v) => {
     setView(v)
