@@ -34,7 +34,7 @@ export default function Reveal({ caseData, accused = [], accident = false, proof
   const badge = localize(TREASURE_BADGE, lang)
 
   const chosenLabel = accident
-    ? ui.reveal.chosenAccident
+    ? solution.verdictChosen || ui.reveal.chosenAccident
     : acc.length
     ? acc.map(nameOf).join(', ')
     : ui.reveal.chosenNone

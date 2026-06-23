@@ -8,9 +8,11 @@ import { L } from '../i18n/L'
 // activists, and the organized provocation found by the official fact-finders)
 // is real. No real persons are depicted as the fictional killer.
 //
-// The mystery centres on a suppressed truth: a student-journalist killed to
-// bury his footage. The theme is memory against erasure. No treasure stage,
-// no celebratory framing.
+// The mystery is deliberately grey: a student-journalist died as his footage
+// was buried, but no single hand can be cleanly convicted — the guilt is
+// shared and, like the real cases, was never brought to justice. The honest
+// verdict is "no lone killer." The theme is memory against erasure. No
+// treasure stage, no celebratory framing.
 export const mei98 = {
   id: 'mei98',
   free: false,
@@ -50,14 +52,14 @@ export const mei98 = {
         'For three days, 13–15 May, thousands of shops and homes were looted and burned. More than a thousand people died — many trapped inside shopping centers that were locked and set ablaze. Women, especially Chinese-Indonesian women, were targeted with sexual violence. Evidence later showed the riots were not wholly spontaneous: someone had set them in motion.'
       ),
       L(
-        'Adi Nugroho, 21 tahun, mahasiswa dan jurnalis pers kampus, merekam semuanya. Kini ia mati, kameranya hilang, dan laporan resmi buru-buru menutup kasusnya sebagai kecelakaan. Kakaknya memanggil Anda. Cari tahu apa yang sebenarnya terjadi pada Adi — dan jangan biarkan kebenarannya ikut dibakar.',
-        'Adi Nugroho, 21, a university student and campus-press journalist, filmed it all. Now he is dead, his camera gone, and the official report has hastily closed the case as an accident. His older sister has called you in. Find out what truly happened to Adi — and do not let the truth burn with him.'
+        'Adi Nugroho, 21 tahun, mahasiswa dan jurnalis pers kampus, merekam semuanya. Kini ia mati, kameranya hilang, dan laporan resmi buru-buru menutup kasusnya sebagai kecelakaan. Kakaknya memanggil Anda. Cari tahu apa yang sebenarnya terjadi pada Adi — meski mungkin kebenarannya bukan satu nama, melainkan luka yang jauh lebih besar.',
+        'Adi Nugroho, 21, a university student and campus-press journalist, filmed it all. Now he is dead, his camera gone, and the official report has hastily closed the case as an accident. His older sister has called you in. Find out what truly happened to Adi — even if the truth turns out to be not a single name, but a far larger wound.'
       ),
     ],
     taskTitle: L('Tugas Anda', 'Your Task'),
     task: L(
-      'Periksa setiap bukti. Interogasi lima orang yang ada di sekitar kejadian. Lalu ajukan satu tuduhan: jika ini bukan sekadar kebakaran, siapa yang membunuh Adi — dan mengapa kebenaran itu ingin dilenyapkan?',
-      'Examine every piece of evidence. Question the five people who were near the scene. Then make a single accusation: if this was no mere fire, who killed Adi — and why was the truth meant to vanish?'
+      'Periksa setiap bukti. Interogasi lima orang yang ada di sekitar kejadian. Lalu putuskan apa yang sebenarnya terjadi pada Adi — dan apakah ada satu orang yang benar-benar bisa disebut pembunuhnya, atau justru tak seorang pun.',
+      'Examine every piece of evidence. Question the five people who were near the scene. Then decide what truly happened to Adi — and whether any one person can be called his killer at all, or whether no one can.'
     ),
   },
   victim: {
@@ -176,7 +178,7 @@ export const mei98 = {
         { q: L('Saksi melihat orang-orang Anda menandai toko dan memancing massa.', 'Witnesses saw your men marking shops and baiting the crowd.'),
           a: L('"Orang bisa salah lihat dalam kepanikan. Toko terbakar sendiri, massa bergerak sendiri. Saya tak menyuruh siapa pun."', `"People mistake things in a panic. Shops burn on their own, crowds move on their own. I ordered no one."`), requires: 'saksitruk' },
         { q: L('Ada rekaman yang memperlihatkan Anda berhadapan dengan Adi sebelum ia tewas.', 'There is footage showing you facing Adi just before he died.'),
-          a: L('"...Rekaman apa? Kamera itu—" (ia berhenti). "Saya tak akan bicara lagi tanpa pengacara."', `"...What footage? That camera—" (he stops). "I won't say another word without a lawyer."`), requires: 'rekaman' },
+          a: L('"Jadi saya di sana. Ratusan orang di sana. Anak itu jatuh dalam kerusuhan, seperti seribu orang lain. Tunjukkan tangan yang membunuhnya — Anda tak bisa, karena tak ada satu tangan untuk ditunjuk. Dan kalaupun bisa, Anda kira saya yang paling penting? Saya hanya diminta datang."', `"So I was there. Hundreds were there. The boy fell in a riot, like a thousand others. Show me the hand that killed him — you can't, because there is no single hand to point to. And even if you could, do you think I'm the one who matters? I was only asked to come."`), requires: 'rekaman' },
       ],
     },
     {
@@ -261,72 +263,83 @@ export const mei98 = {
     { t: L('21 Mei', '21 May'), key: false, x: L('Presiden Soeharto mengundurkan diri; era Reformasi dimulai. Banyak kasus Mei tak pernah tuntas.', 'President Suharto resigns; the Reformasi era begins. Many May cases are never resolved.') },
   ],
   solution: {
-    killer: 'heru',
+    // The honest verdict is that no single hand can be convicted: the footage
+    // proves the violence was engineered but cuts off before any blow. The
+    // "not a murder" verdict is reframed (no killer, but no innocent accident
+    // either) — guilt is shared and was never brought to justice.
+    accident: true,
+    verdictLabel: L(
+      'Tak ada pembunuh tunggal — kekerasan yang dirancang, dan tak pernah diadili',
+      'No single killer — an engineered violence, never brought to justice'
+    ),
+    verdictChosen: L(
+      'tak ada pelaku tunggal — kejahatan yang dirancang bersama dan dibiarkan tanpa keadilan',
+      'no single culprit — a crime engineered together and left without justice'
+    ),
     proofLabels: {
-      motive: { label: L('Motif', 'Motive'), hint: L('Mengapa ia harus dibungkam?', 'Why was he silenced?') },
-      means: { label: L('Cara', 'Means'), hint: L('Bagaimana ia sebenarnya tewas?', 'How did he really die?') },
-      opportunity: { label: L('Kesempatan', 'Opportunity'), hint: L('Siapa yang mengarahkan massa di sana?', 'Who was directing the mob there?') },
+      motive: { label: L('Yang menyalakan', 'What lit it'), hint: L('Apa yang menggerakkan kekerasan ini?', 'What set this violence in motion?') },
+      means: { label: L('Yang membunuh', 'What killed him'), hint: L('Mengapa ini bukan sekadar kecelakaan?', 'Why was this no mere accident?') },
+      opportunity: { label: L('Yang dikubur', 'What was buried'), hint: L('Bagaimana kebenarannya ditutupi?', 'How was the truth hidden?') },
     },
-    motive: ['kamera', 'rekaman'],
-    means: ['jasad'],
-    opportunity: ['saksitruk', 'rekaman'],
+    motive: ['saksitruk', 'spidol', 'rekaman'],
+    means: ['jasad', 'pintu'],
+    opportunity: ['kamera', 'laporan', 'rekaman'],
   },
   reveal: {
-    killerName: 'Heru Santosa',
     sections: [
-      { h: L('Bukan korban kebakaran', 'Not a victim of the fire'), p: [
+      { h: L('Bukan kecelakaan', 'Not an accident'), p: [
         L(
-          'Adi tidak mati terbakar. Otopsi membuktikannya: paru-parunya bersih dari asap, dan ada luka benda tumpul di kepalanya. Ia sudah tewas sebelum api menjalar, lalu tubuhnya ditinggalkan di dalam gedung agar tampak sebagai korban kerusuhan — satu angka lagi di antara seribu.',
-          'Adi did not die in the fire. The autopsy proves it: his lungs were clear of smoke, and there was blunt-force trauma to his head. He was dead before the flames spread, then his body was left inside to look like one more victim of the riot — one more number among a thousand.'
+          'Mari mulai dari yang pasti: Adi tidak sekadar terjebak api. Paru-parunya bersih dari asap, ada luka benda tumpul di kepalanya, dan pintu-pintu gedung itu dirantai dari luar. Kematiannya dibuat agar tampak sebagai satu angka lagi di antara seribu. Sejauh itu, jelas.',
+          `Begin with what is certain: Adi was not simply trapped by the fire. His lungs were clear of smoke, there was blunt-force trauma to his head, and the building's doors were chained from the outside. His death was made to look like one more number among a thousand. That much is clear.`
         ),
       ] },
-      { h: L('Pelakunya: Heru Santosa', 'The killer: Heru Santosa'), p: [
+      { h: L('Tapi tangan siapa?', 'But whose hand?'), p: [
         L(
-          'Adi membawa kamera ke tempat yang ditakuti semua orang, dan merekam apa yang seharusnya tak terlihat: rombongan Heru turun dari truk, menandai toko, dan menggerakkan massa untuk menjarah dan membakar. Kerusuhan itu tidak tumbuh dengan sendirinya — ada yang menyalakannya.',
-          `Adi took his camera where everyone else feared to go, and filmed what was never meant to be seen: Heru's group stepping down from the trucks, marking the shops, and driving the crowd to loot and burn. The riot did not grow on its own — someone lit it.`
+          'Di sinilah kebenaran menolak menjadi rapi. Rekaman Adi membuktikan kekerasan itu dirancang — rombongan Heru turun dari truk, menandai toko, menggerakkan massa. Tapi kaset itu terputus tepat saat Adi berhadapan dengan mereka, sebelum pukulan yang mana pun. Di tengah asap, kepanikan, dan ratusan orang, tak ada satu bingkai pun yang menunjukkan tangan siapa yang merenggut nyawanya.',
+          `Here the truth refuses to be tidy. Adi's footage proves the violence was engineered — Heru's group climbing down from the trucks, marking the shops, driving the crowd. But the tape cuts off just as Adi faces them, before any blow. Amid the smoke, the panic, and hundreds of people, not one frame shows whose hand took his life.`
         ),
         L(
-          'Karena itulah Adi harus dibungkam. Heru mengejarnya ke dalam gedung, memukulnya hingga tewas, dan mengambil kameranya — berharap kebenaran ikut padam bersama api. Saat dihadapkan pada salinan rekamannya, Heru tergelincir: ia menyebut "kamera itu" sebelum sempat berpikir. Hanya orang yang mengambilnya yang tahu kamera itu ada.',
-          `That is why Adi had to be silenced. Heru chased him into the building, beat him to death, and took his camera — hoping the truth would die with the fire. Confronted with the copy of the footage, Heru slipped: he said "that camera" before he could stop himself. Only the man who took it would know the camera existed.`
-        ),
-      ] },
-      { h: L('Mengapa bukan yang lain', 'Why not the others'), p: [
-        L(
-          'Pak Darmawan menandatangani laporan palsu itu karena takut dan ditekan — sebuah kepengecutan, bukan pembunuhan. Aliong kehilangan tokonya dan justru menarik orang keluar dari api; jeriken berlabel namanya hanyalah jarahan yang ditinggalkan untuk menyesatkan. Maya menyembunyikan rekaman demi menjaga kebenaran, bukan melenyapkannya. Rahmat hanya saksi yang terlalu lama takut bersuara.',
-          'Pak Darmawan signed the false report out of fear and pressure — cowardice, not murder. Aliong lost his shop and pulled people out of the flames; the jerrycan with his name was only loot left behind to mislead. Maya hid the footage to protect the truth, not to erase it. Rahmat was only a witness too long afraid to speak.'
-        ),
-        L(
-          'Tiga unsur bertemu pada satu orang: motif (rekaman yang membongkar operasinya), cara (luka di kepala Adi, bukan api), dan kesempatan (ia yang mengarahkan massa dan mengejar Adi ke dalam gedung). Itu Heru.',
-          `All three elements meet in one man: motive (the footage that exposed his operation), means (the wound to Adi's head, not the fire), and opportunity (he directed the mob and chased Adi into the building). That is Heru.`
+          'Heru memancing kerusuhan dan mengejar Adi; orang-orangnya mengambil kamera itu. Ia bergelimang salah. Namun "pembunuh" adalah kata yang terlalu pasti untuk bukti yang ada — dan terlalu kecil untuk kejahatan yang sebenarnya. Sebab di atas Heru ada orang-orang yang mengirim truk-truk itu: nama-nama yang tak pernah tertangkap kamera, dan tak pernah tersentuh hukum.',
+          `Heru baited the riot and chased Adi; his men took the camera. He is steeped in guilt. Yet "murderer" is a word too certain for the proof we hold — and too small for the real crime. For above Heru stood those who sent the trucks: names no camera ever caught, and the law never touched.`
         ),
       ] },
-      { h: L('Agar tidak dilupakan', 'So that it is not forgotten'), p: [
+      { h: L('Setiap orang, satu warna kelabu', 'Each one a shade of grey'), p: [
         L(
-          'Satu kasus terpecahkan tak mengembalikan lebih dari seribu nyawa yang hilang pada Mei 1998, tak menghapus luka para perempuan yang menjadi korban, tak memulangkan para aktivis yang dihilangkan. Sebagian besar pelakunya tak pernah diadili.',
-          'Solving one case does not bring back the more than a thousand lives lost in May 1998, does not erase the wounds of the women who were victims, does not return the activists who were disappeared. Most of those responsible were never brought to trial.'
+          'Pak Darmawan mengubur kasus ini dengan tanda tangan, karena takut — bersalah atas diam, bukan atas darah. Aliong kehilangan tokonya dan menarik orang dari api; jeriken bernama dirinya hanyalah jebakan. Maya menyembunyikan rekaman dengan taruhan nyawa agar kebenaran tak padam. Rahmat melihat, lalu terlalu lama takut bersuara. Tak satu pun dari mereka membunuh Adi — tapi tak satu pun benar-benar tak bernoda. Begitulah cara sebuah tragedi bekerja: ia mengotori setiap tangan, lalu menyembunyikan tangan yang paling berdarah.',
+          `Pak Darmawan buried the case with a signature, out of fear — guilty of silence, not of blood. Aliong lost his shop and pulled people from the flames; the jerrycan bearing his name was only a trap. Maya hid the footage at the risk of her life so the truth would not die. Rahmat saw, then was too long afraid to speak. None of them killed Adi — yet none is wholly unstained. That is how a tragedy works: it dirties every hand, then hides the bloodiest one.`
+        ),
+      ] },
+      { h: L('Keadilan yang tak pernah datang', 'A justice that never came'), p: [
+        L(
+          'Dalam cerita yang rapi, kita menunjuk satu penjahat dan keadilan ditegakkan. Mei 1998 bukan cerita yang rapi. Para perancangnya tak pernah diadili, kasus-kasusnya tak pernah ditutup, dan tak seorang pun pernah benar-benar dinyatakan bersalah. Menunjuk satu kambing hitam hanya akan mengulang kebohongan yang sama — membiarkan mereka yang sungguh bertanggung jawab menghilang, persis seperti yang sudah terjadi.',
+          `In a tidy story, we name one villain and justice is done. May 1998 was not a tidy story. Its architects were never tried, its cases never closed, and no one was ever truly found guilty. To name a single scapegoat would only repeat the same lie — letting those truly responsible vanish, exactly as they already have.`
         ),
         L(
-          'Tapi rekaman Adi selamat, karena seseorang menolak melupakan. Mengingat adalah bentuk perlawanan paling sederhana terhadap mereka yang berharap kita lupa. Kepada para korban dan penyintas Mei 1998: kami mengenang kalian.',
-          `But Adi's footage survived, because someone refused to forget. To remember is the simplest act of defiance against those who hope we will forget. To the victims and survivors of May 1998: we remember you.`
+          'Maka inilah kesimpulan yang paling jujur, dan paling sukar ditanggung: tak ada satu pembunuh untuk dihukum, hanya kejahatan yang dirancang bersama dan dibiarkan tanpa keadilan. Tapi rekaman Adi selamat, karena seseorang menolak melupakan. Mengingat adalah keadilan paling sederhana yang masih bisa kita berikan. Kepada para korban dan penyintas Mei 1998: kami mengenang kalian.',
+          `So this is the most honest verdict, and the hardest to bear: there is no lone killer to punish, only a crime engineered together and left without justice. But Adi's footage survived, because someone refused to forget. To remember is the simplest justice we can still give. To the victims and survivors of May 1998: we remember you.`
         ),
       ] },
     ],
     rebuttals: {
+      heru: L(
+        'Heru memancing kerusuhan, mengejar Adi, dan orang-orangnya mengambil kameranya — ia paling bergelimang salah di sini. Tapi rekaman terputus sebelum pukulan, dan di tengah asap tak ada yang bisa membuktikan tangannya yang membunuh. Menghukum dia seorang diri pun membiarkan para perancang di atasnya lolos — seperti yang sungguh terjadi. Bersalah, ya; tapi "sang pembunuh" terlalu pasti, dan terlalu kecil.',
+        `Heru baited the riot, chased Adi, and his men took the camera — he is the most steeped in guilt here. But the tape cuts off before the blow, and in the smoke no one can prove his was the hand that killed. To punish him alone also lets the architects above him walk free — as they truly did. Guilty, yes; but "the murderer" is too certain, and too small.`
+      ),
       darmawan: L(
         'Pak Darmawan menutup kasus dengan tanda tangan, bukan dengan tangan yang membunuh. Ia pengecut yang ditekan — bersalah atas diam, bukan atas nyawa Adi.',
-        `Pak Darmawan closed the case with a signature, not with the hands that killed. He was a coward under pressure — guilty of silence, not of Adi's life.`
+        `Pak Darmawan closed the case with a signature, not the hands that killed. A coward under pressure — guilty of silence, not of Adi's life.`
       ),
       aliong: L(
-        'Aliong kehilangan tokonya dan menarik orang keluar dari kobaran. Jeriken berlabel namanya hanyalah jarahan yang ditinggalkan untuk menudingnya. Ia korban, bukan pembunuh.',
-        'Aliong lost his shop and pulled people from the flames. The jerrycan with his name was only loot left to point at him. He is a victim, not a killer.'
+        'Aliong kehilangan tokonya dan menarik orang keluar dari kobaran. Jeriken bernama dirinya hanyalah jarahan yang ditinggalkan untuk menudingnya. Ia korban, bukan pembunuh.',
+        'Aliong lost his shop and pulled people from the flames. The jerrycan bearing his name was only loot left to point at him. He is a victim, not a killer.'
       ),
       maya: L(
         'Maya menyimpan rekaman Adi dengan taruhan nyawanya sendiri agar kebenaran tak padam. Ia menjaga bukti, bukan melenyapkan saksinya.',
         `Maya kept Adi's footage at the risk of her own life so the truth would not die. She guarded the evidence; she did not silence the witness.`
       ),
       rahmat: L(
-        'Rahmat melihat Heru mengejar Adi ke dalam gedung, tapi terlalu takut untuk mengikuti. Kesaksiannya membongkar kasus ini; ketakutannya bukan kejahatan.',
-        'Rahmat saw Heru chase Adi into the building, but was too afraid to follow. His testimony cracks this case open; his fear is no crime.'
+        'Rahmat melihat Heru mengejar Adi ke dalam gedung, tapi terlalu takut untuk mengikuti. Diamnya bertahun-tahun adalah satu warna kelabu — tapi ketakutan bukanlah pembunuhan.',
+        'Rahmat saw Heru chase Adi into the building, but was too afraid to follow. His years of silence are a shade of grey — but fear is not murder.'
       ),
     },
   },

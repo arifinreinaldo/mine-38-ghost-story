@@ -87,7 +87,7 @@ export default function Accuse({
             onClick={toggleAccident}
           >
             <span className="va-ic" aria-hidden="true">⚖</span>
-            <span className="va-text">{ui.accuse.accident}</span>
+            <span className="va-text">{caseData.solution.verdictLabel || ui.accuse.accident}</span>
             <span className="pick-mark" aria-hidden="true">{accident ? '✓' : ''}</span>
           </button>
         </div>
