@@ -1363,7 +1363,7 @@ body::after {
   align-items: center;
 }
 .lock-kind {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1386,7 +1386,7 @@ body::after {
   background: #0e1116;
   border: 1px solid var(--line);
   border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 1.15rem;
   letter-spacing: 0.35em;
   color: var(--ember-soft);
@@ -1402,7 +1402,7 @@ body::after {
   border-radius: 4px;
   padding: 12px 14px;
   color: var(--bone);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 0.95rem;
 }
 .lock-input input:focus-visible {

@@ -48,7 +48,7 @@ function schedulePing(handle, theme) {
 // Build and start a voice-set for a theme. Signal graph:
 //   drones + pings ─▶ master(faded) ─▶ breath(LFO) ─▶ filter ─▶ out
 //                                                         └▶ delay ↺ ─▶ out
-function build(theme) {
+function build(theme, key) {
   const t0 = ctx.currentTime
   const master = ctx.createGain()
   master.gain.value = 0.0001
@@ -111,7 +111,7 @@ function build(theme) {
   master.gain.setValueAtTime(0.0001, t0)
   master.gain.linearRampToValueAtTime(theme.level, t0 + 5)
 
-  const handle = { master, voices, timers: [] }
+  const handle = { key, master, voices, timers: [] }
   schedulePing(handle, theme)
   return handle
 }
@@ -139,10 +139,10 @@ function reconcile() {
   if (!ctx) return
   if (enabled) {
     if (!active) {
-      active = { key: curKey, ...build(THEMES[curKey]) }
+      active = build(THEMES[curKey], curKey)
     } else if (active.key !== curKey) {
       const old = active
-      active = { key: curKey, ...build(THEMES[curKey]) } // crossfade: old fades as new fades in
+      active = build(THEMES[curKey], curKey) // crossfade: old fades as new fades in
       teardown(old)
     }
   } else if (active) {

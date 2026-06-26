@@ -1,20 +1,28 @@
 # Maut di Mahameru
 
-Misteri pembunuhan interaktif berlatar pendakian Gunung Semeru. Pemain memeriksa
-bukti, menginterogasi saksi, menandai tersangka, lalu mengajukan satu tuduhan.
+Kumpulan misteri pembunuhan interaktif berlatar Indonesia. Pemain memeriksa
+bukti, menginterogasi saksi, menandai tersangka, lalu mengajukan satu kesimpulan
+— termasuk kemungkinan bahwa kematiannya bukan pembunuhan, atau tak ada satu
+pelaku pun yang bisa ditunjuk.
 
-Built with **Vite + React**. Mesin kasus **berbasis-data (multi-kasus)**; sample
+Built with **Vite + React**. Mesin kasus **berbasis-data (multi-kasus)**,
+**dwibahasa (Indonesia/English)**, dengan **musik latar** prosedural; sample
 gratis tanpa backend.
 
 ## Kasus
 
+12 kasus berlatar berbagai daerah dan zaman di Indonesia: **1 gratis** (sample)
++ **11 terkunci** (di balik gerbang registrasi).
+
 | Kasus | Tingkat | Akses |
 |---|---|---|
 | **Maut di Mahameru** — pendaki tewas di Semeru | Mudah | Gratis (sample) |
-| **Maut di Wisma Kencana** — "sang dermawan" tewas di pesta megahnya | Mudah | Perlu registrasi |
+| 11 kasus lain — dari vila, candi, loji kolonial, Toraja, hingga Mei 1998 | Sedang–Sulit | Perlu registrasi |
 
-Kasus kedua lebih sulit: 5 tersangka, 10 bukti, dan tiga lapis kejutan
-(harta palsu → perampokan rekayasa → pengkhianatan partner).
+Ragam bentuk teka-teki: pelaku tunggal, **komplotan** (beberapa pelaku),
+**kecelakaan** (ternyata bukan pembunuhan), hingga **kasus kelabu** tanpa pelaku
+tunggal yang bisa diadili. Satu kasus menyimpan bonus **Perburuan Harta**
+tersembunyi (sandi → titik peta → koordinat asli via Google Maps).
 
 ## Fitur
 
@@ -23,7 +31,14 @@ Kasus kedua lebih sulit: 5 tersangka, 10 bukti, dan tiga lapis kejutan
   bukti terkait ditemukan; satu bukti kunci (twist) tersembunyi sampai dipicu.
 - **Jebakan (red herring)**: satu bukti sengaja memberatkan tersangka yang salah.
 - **Deduksi**: untuk menuduh, pemain menyusun pembuktian — memilih bukti untuk
-  **Motif · Cara · Kesempatan**, bukan sekadar menebak nama.
+  **Motif · Cara · Kesempatan**, bukan sekadar menebak nama. Vonis bisa berupa
+  pelaku tunggal, komplotan, kecelakaan, atau "tak ada pelaku tunggal".
+- **Dwibahasa**: seluruh antarmuka & kasus tersedia dalam **Indonesia/English**
+  (tombol ID/EN; default Indonesia, pilihan tersimpan).
+- **Musik latar**: ambient mencekam yang dibangkitkan secara prosedural (tanpa
+  berkas audio — bebas lisensi), **beda tiap kasus**, bisa dimatikan kapan saja.
+- **Perburuan Harta** (bonus tersembunyi di satu kasus): pecahkan sandi, temukan
+  titik peta, lalu rakit koordinat asli — perlu peta daring untuk memecahkannya.
 - **Peringkat detektif** + **hasil yang bisa dibagikan** (Web Share/clipboard).
 - **Simpan progres** otomatis (localStorage) — bisa dilanjutkan.
 - **PWA**: bisa di-install dan jalan offline.
@@ -96,29 +111,39 @@ vercel.json             # framework, cache aset, header keamanan
 supabase/schema.sql     # tabel + RLS (Fase 1 login, Fase 2 paywall dikomentari)
 public/                 # favicon (belati+darah), ikon PWA, manifest, sw.js, og.png
 src/
-├─ main.jsx             # entry React + AuthProvider + registrasi service worker
-├─ App.jsx              # orkestrasi tampilan: beranda / auth / next / play
+├─ main.jsx             # entry React + LangProvider + AuthProvider + service worker
+├─ App.jsx              # orkestrasi tampilan + lokalisasi kasus + tema musik aktif
 ├─ index.css            # design tokens + styling
+├─ i18n/
+│  ├─ L.js              # penanda L('id','en') + localize() rekursif
+│  ├─ strings.js        # kamus teks UI (id/en)
+│  └─ LangProvider.jsx  # state bahasa (persist) + useUI()/useLang()
+├─ audio/
+│  ├─ ambient.js        # mesin musik prosedural (Web Audio) + kontrol play/tema
+│  └─ themes.js         # tema ambient per-kasus
 ├─ cases/
-│  ├─ index.js          # registry kasus (freeCase, gatedCase, getCase)
+│  ├─ index.js          # registry kasus (freeCase, gatedCases, getCase)
 │  ├─ mahameru.js       # Kasus 1 (gratis)
-│  └─ kencana.js        # Kasus 2 (terkunci, lebih sulit)
+│  └─ …                 # 11 kasus terkunci lain (mis. macankawi: + Perburuan Harta; mei98: kelabu)
 ├─ lib/
 │  ├─ supabase.js       # client Supabase (lazy, opsional)
 │  ├─ content.js        # ambil konten kasus terkunci (RLS-gated, untuk paywall)
-│  ├─ ranks.js          # peringkat detektif (dipakai lintas kasus)
+│  ├─ ranks.js          # peringkat detektif + lencana harta (dwibahasa)
+│  ├─ geo.js            # pencocokan jawaban Perburuan Harta (sandi/koordinat)
 │  ├─ save.js           # simpan progres per-kasus
 │  └─ intent.js         # ingat tujuan untuk lanjut otomatis setelah login
 ├─ auth/
 │  └─ AuthProvider.jsx  # sesi + signIn/signUp/magic-link/signOut
 ├─ pwa/                 # install prompt + status standalone/offline
 └─ components/
-   ├─ Icons.jsx         # ikon bukti, medali siluet, ilustrasi TKP (mountain/estate)
+   ├─ Icons.jsx         # ikon bukti, medali siluet, ilustrasi TKP (8 latar)
    ├─ Cover.jsx         # beranda: hero + kontrol akun + teaser kasus terkunci
    ├─ CasePlayer.jsx    # menjalankan satu kasus (state + save per-kasus)
    ├─ Auth.jsx          # layar masuk/daftar
-   ├─ NextCase.jsx      # kasus berikutnya (gerbang registrasi)
-   ├─ Briefing.jsx · Investigation.jsx · Accuse.jsx · Reveal.jsx
+   ├─ NextCase.jsx      # daftar kasus terkunci (gerbang registrasi)
+   ├─ Briefing · Investigation · Accuse · Reveal · TreasureHunt
+   ├─ Disclaimer.jsx    # catatan "ini fiksi / terinspirasi"
+   ├─ LangToggle.jsx · SoundToggle.jsx   # pemilih bahasa & musik
    └─ PwaBar.jsx        # notifikasi luring
 ```
 
@@ -127,14 +152,16 @@ src/
 Seluruh konten kasus (latar, karakter, alur) orisinal.
 
 Untuk menambah kasus baru: buat berkas di `src/cases/<id>.js` (ikuti bentuk
-`mahameru.js` — `evidence` dengan `locked`/`requires`/`unlocks`, `suspects`,
-`solution`, `reveal`), lalu daftarkan di `src/cases/index.js`.
+`mahameru.js` — bungkus teks dengan `L('id','en')`; `evidence` dengan
+`locked`/`requires`/`unlocks`, `suspects`, `solution`, `reveal`), daftarkan di
+`src/cases/index.js`, lalu tambahkan tema musiknya di `src/audio/themes.js`.
 
 ### Rencana (roadmap)
 
-- **Fase 1 (selesai):** dua kasus — sample gratis + kasus kedua di balik gerbang
-  registrasi (Supabase Auth). Kasus kedua kini masih ter-bundle (gerbang login
-  di sisi klien) karena belum berbayar.
+- **Fase 1 (selesai):** 12 kasus (sample gratis + 11 di balik gerbang registrasi
+  Supabase Auth), antarmuka dwibahasa (ID/EN), dan musik latar prosedural. Kasus
+  terkunci kini masih ter-bundle (gerbang login di sisi klien) karena belum
+  berbayar.
 - **Fase 2 (paywall):** pindahkan konten kasus berbayar ke tabel `story_content`
   Supabase (jangan di-bundle), aktifkan `entitlements` + RLS (sudah disiapkan di
   `supabase/schema.sql`) dan webhook Stripe. Hanya pembeli yang bisa membaca.
