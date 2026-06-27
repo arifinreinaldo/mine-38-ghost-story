@@ -11,13 +11,13 @@ gratis tanpa backend.
 
 ## Kasus
 
-12 kasus berlatar berbagai daerah dan zaman di Indonesia: **1 gratis** (sample)
-+ **11 terkunci** (di balik gerbang registrasi).
+13 kasus berlatar berbagai daerah dan zaman di Indonesia: **1 gratis** (sample)
++ **12 terkunci** (di balik gerbang registrasi).
 
 | Kasus | Tingkat | Akses |
 |---|---|---|
 | **Maut di Mahameru** — pendaki tewas di Semeru | Mudah | Gratis (sample) |
-| 11 kasus lain — dari vila, candi, loji kolonial, Toraja, hingga Mei 1998 | Sedang–Sulit | Perlu registrasi |
+| 12 kasus lain — dari vila, candi, loji kolonial, Toraja, Mei 1998, hingga penyulingan arak Bali | Sedang–Sulit | Perlu registrasi |
 
 Ragam bentuk teka-teki: pelaku tunggal, **komplotan** (beberapa pelaku),
 **kecelakaan** (ternyata bukan pembunuhan), hingga **kasus kelabu** tanpa pelaku
@@ -158,7 +158,7 @@ Untuk menambah kasus baru: buat berkas di `src/cases/<id>.js` (ikuti bentuk
 
 ### Rencana (roadmap)
 
-- **Fase 1 (selesai):** 12 kasus (sample gratis + 11 di balik gerbang registrasi
+- **Fase 1 (selesai):** 13 kasus (sample gratis + 12 di balik gerbang registrasi
   Supabase Auth), antarmuka dwibahasa (ID/EN), dan musik latar prosedural. Kasus
   terkunci kini masih ter-bundle (gerbang login di sisi klien) karena belum
   berbayar.

@@ -295,6 +295,48 @@ export function SceneArt({ className, variant = 'mountain' }) {
             <path d="M0 -18 L13 -14 L0 -10 Z" fill="#9a3030" />
           </g>
         </g>
+      ) : variant === 'distillery' ? (
+        <g>
+          {/* a craft arak still at dusk: copper pot, coil, vapour, jars, palm */}
+          <rect x="0" y="150" width="800" height="110" fill="url(#sceneWarm)" opacity="0.4" />
+          <rect x="0" y="214" width="800" height="46" fill="#10131a" />
+          {/* palm silhouette, left */}
+          <path d="M120 214 C118 180 116 150 122 120" stroke="#161b23" strokeWidth="6" fill="none" />
+          <g stroke="#1a2029" strokeWidth="4" fill="none" strokeLinecap="round">
+            <path d="M122 120 C100 104 80 100 64 106" />
+            <path d="M122 120 C144 104 164 100 180 106" />
+            <path d="M122 120 C108 98 100 80 100 66" />
+            <path d="M122 120 C136 98 146 82 150 68" />
+          </g>
+          {/* copper pot still */}
+          <path d="M470 214 L470 188 Q470 150 520 150 Q570 150 570 188 L570 214 Z" fill="#161b23" />
+          <ellipse cx="520" cy="150" rx="50" ry="15" fill="#1a2029" />
+          {/* swan neck + condenser coil */}
+          <path d="M520 150 Q520 120 556 116 L606 116" fill="none" stroke="#1a2029" strokeWidth="7" strokeLinecap="round" />
+          <path d="M606 116 q24 0 24 18 t-24 18 t24 18 t-24 18" fill="none" stroke="#1a2029" strokeWidth="6" />
+          {/* collection jar */}
+          <rect x="596" y="196" width="20" height="22" rx="3" fill="#0e1116" stroke="#1a2029" strokeWidth="2" />
+          <rect x="598" y="206" width="16" height="12" fill="#e08a4d" opacity="0.5" />
+          {/* fire glow under the pot */}
+          <ellipse cx="520" cy="214" rx="40" ry="8" fill="#c8642a" opacity="0.5" />
+          <path d="M508 214 q6 -16 12 -10 q-2 -10 8 -13 q3 11 -2 17 q9 -1 7 6 Z" fill="#e08a4d" opacity="0.75" />
+          {/* vapour rising */}
+          <g fill="none" stroke="#2a3340" strokeWidth="6" strokeLinecap="round" opacity="0.35">
+            <path d="M510 150 q-10 -22 4 -40 q-12 -16 0 -34" />
+            <path d="M534 150 q10 -20 -2 -38" />
+          </g>
+          {/* bottles, lower left */}
+          <g fill="#10131a" stroke="#1a2029" strokeWidth="2">
+            <path d="M250 214 L250 196 q0 -6 6 -8 l0 -8 l8 0 l0 8 q6 2 6 8 l0 18 Z" />
+            <path d="M278 214 L278 198 q0 -6 6 -8 l0 -8 l8 0 l0 8 q6 2 6 8 l0 16 Z" />
+          </g>
+          {/* crime-scene marker */}
+          <g transform="translate(372 206)">
+            <path d="M0 0 v-22" stroke="#9a3030" strokeWidth="2.4" strokeLinecap="round" />
+            <path d="M0 -22 L15 -17 L0 -12 Z" fill="#9a3030" />
+            <circle cx="0" cy="2" r="2.2" fill="#9a3030" />
+          </g>
+        </g>
       ) : variant === 'kota' ? (
         <g>
           {/* Jakarta under smoke, May 1998 — a sombre skyline, distant fires */}

@@ -3,7 +3,7 @@ import { caseList, getCase, freeCase, gatedCases } from '../src/cases'
 import { localize } from '../src/i18n/L'
 import { THEMES } from '../src/audio/themes'
 
-const KNOWN_SCENES = new Set(['mountain', 'estate', 'coast', 'highland', 'toraja', 'kolonial', 'kawi', 'kota'])
+const KNOWN_SCENES = new Set(['mountain', 'estate', 'coast', 'highland', 'toraja', 'kolonial', 'kawi', 'kota', 'distillery'])
 const KNOWN_ICONS = new Set(['forensics', 'evidence', 'phone', 'apparel', 'recon', 'social', 'metadata', 'photo', 'doc', 'car', 'ledger', 'cup', 'cctv', 'ticket', 'key'])
 const KNOWN_DIFF = new Set(['Mudah', 'Sedang', 'Sulit'])
 
@@ -20,15 +20,15 @@ const countL = (v) => {
 }
 
 describe('case registry', () => {
-  it('has 12 cases with unique ids', () => {
-    expect(caseList).toHaveLength(12)
+  it('has 13 cases with unique ids', () => {
+    expect(caseList).toHaveLength(13)
     const ids = caseList.map((c) => c.id)
-    expect(new Set(ids).size).toBe(12)
+    expect(new Set(ids).size).toBe(13)
   })
   it('has exactly one free case (the sample), the rest gated', () => {
     expect(caseList.filter((c) => c.free)).toHaveLength(1)
     expect(freeCase.free).toBe(true)
-    expect(gatedCases).toHaveLength(11)
+    expect(gatedCases).toHaveLength(12)
   })
   it('getCase resolves by id', () => {
     expect(getCase('mahameru')).toBe(freeCase)
