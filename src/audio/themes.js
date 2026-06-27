@@ -50,5 +50,5 @@ export const THEMES = {
   banten:    T({ root: 73.42, stack: STACK.tritone, cutoff: 640, scale: SCALES.clstr, delayTime: 0.45, breathRate: 0.07 }),                       // colonial fort tension
   macankawi: T({ root: 56.25, stack: STACK.minor3,  cutoff: 700, scale: SCALES.dim,   delayTime: 0.58, breathRate: 0.06 }),                       // treasure mystery
   mei98:     T({ root: 38.89, stack: STACK.octave,  cutoff: 460, scale: SCALES.phryg, delayTime: 0.92, breathRate: 0.038, pingType: 'sine', level: 0.1 }), // mournful remembrance
-  arak:      T({ root: 63.0,  stack: STACK.minor3,  cutoff: 640, scale: SCALES.minor, delayTime: 0.5,  breathRate: 0.06 }),                       // craft distillery — warm but uneasy
+  ciu:       T({ root: 63.0,  stack: STACK.minor3,  cutoff: 640, scale: SCALES.minor, delayTime: 0.5,  breathRate: 0.06 }),                       // ciu still — sugarcane & smoke
 }

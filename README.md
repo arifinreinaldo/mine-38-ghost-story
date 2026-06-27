@@ -17,7 +17,7 @@ gratis tanpa backend.
 | Kasus | Tingkat | Akses |
 |---|---|---|
 | **Maut di Mahameru** — pendaki tewas di Semeru | Mudah | Gratis (sample) |
-| 12 kasus lain — dari vila, candi, loji kolonial, Toraja, Mei 1998, hingga penyulingan arak Bali | Sedang–Sulit | Perlu registrasi |
+| 12 kasus lain — dari vila, candi, loji kolonial, Toraja, Mei 1998, hingga ciu Bekonang | Sedang–Sulit | Perlu registrasi |
 
 Ragam bentuk teka-teki: pelaku tunggal, **komplotan** (beberapa pelaku),
 **kecelakaan** (ternyata bukan pembunuhan), hingga **kasus kelabu** tanpa pelaku
