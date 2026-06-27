@@ -36,6 +36,37 @@ create policy "content for signed-in users"
   to authenticated
   using (true);
 
+-- ── Player progress (per user, per case) ────────────────────────────────────
+-- Mirrors each player's per-case save so progress follows them across devices.
+-- The app is local-first (localStorage stays the offline source of truth); this
+-- table is the durable, cross-device copy for signed-in users.
+create table if not exists public.progress (
+  user_id    uuid not null references auth.users(id) on delete cascade default auth.uid(),
+  story_id   text not null,
+  state      jsonb not null,
+  updated_at timestamptz not null default now(),
+  primary key (user_id, story_id)
+);
+
+alter table public.progress enable row level security;
+
+-- Each user may read and write ONLY their own progress.
+drop policy if exists "own progress - select" on public.progress;
+create policy "own progress - select" on public.progress
+  for select to authenticated using (user_id = auth.uid());
+
+drop policy if exists "own progress - insert" on public.progress;
+create policy "own progress - insert" on public.progress
+  for insert to authenticated with check (user_id = auth.uid());
+
+drop policy if exists "own progress - update" on public.progress;
+create policy "own progress - update" on public.progress
+  for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+drop policy if exists "own progress - delete" on public.progress;
+create policy "own progress - delete" on public.progress
+  for delete to authenticated using (user_id = auth.uid());
+
 -- ─────────────────────────────────────────────────────────────────────────────
 -- PHASE 2 — PAYWALL (uncomment when wiring Stripe). Entitlements become the gate.
 -- ─────────────────────────────────────────────────────────────────────────────

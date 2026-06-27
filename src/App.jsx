@@ -3,6 +3,7 @@ import { useAuth } from './auth/AuthProvider'
 import { useLang } from './i18n/LangProvider'
 import { localize } from './i18n/L'
 import { setTheme } from './audio/ambient'
+import { attachProgressSync, setProgressUser, syncProgress } from './lib/progressSync'
 import { getIntent, clearIntent } from './lib/intent'
 import { freeCase, getCase } from './cases'
 import Cover from './components/Cover'
@@ -32,6 +33,24 @@ export default function App() {
   useEffect(() => {
     setTheme(view === 'play' ? activeCaseId : 'default')
   }, [view, activeCaseId])
+
+  // Mirror per-case progress to the database for the signed-in user, and merge
+  // cloud progress back on login (local-first; no-op when Supabase/user absent).
+  const [, setSyncTick] = useState(0)
+  useEffect(() => {
+    attachProgressSync()
+  }, [])
+  useEffect(() => {
+    setProgressUser(user)
+    if (!user) return undefined
+    let active = true
+    syncProgress(user).then((changed) => {
+      if (active && changed) setSyncTick((n) => n + 1)
+    })
+    return () => {
+      active = false
+    }
+  }, [user])
 
   const go = (v) => {
     setView(v)

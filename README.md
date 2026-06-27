@@ -40,7 +40,9 @@ tersembunyi (sandi → titik peta → koordinat asli via Google Maps).
 - **Perburuan Harta** (bonus tersembunyi di satu kasus): pecahkan sandi, temukan
   titik peta, lalu rakit koordinat asli — perlu peta daring untuk memecahkannya.
 - **Peringkat detektif** + **hasil yang bisa dibagikan** (Web Share/clipboard).
-- **Simpan progres** otomatis (localStorage) — bisa dilanjutkan.
+- **Simpan progres** otomatis (localStorage) — bisa dilanjutkan; dan **tersinkron
+  ke database** (Supabase) per akun saat login, jadi progres mengikuti lintas
+  perangkat (local-first: tetap jalan offline).
 - **PWA**: bisa di-install dan jalan offline.
 
 ## Menjalankan secara lokal
@@ -96,6 +98,14 @@ Mengaktifkan registrasi (Fase 1 — gerbang login untuk kasus berikutnya):
 4. **Authentication → Providers → Email**: aktifkan. Untuk uji cepat, matikan
    sementara "Confirm email" agar sign up langsung bisa login.
 
+**Progres tersinkron (cloud).** Tabel `progress` menyimpan save per-kasus tiap
+pemain (RLS: tiap orang hanya bisa membaca/menulis miliknya). Aplikasi tetap
+*local-first* — localStorage adalah sumber utama yang jalan offline — lalu
+progres dicerminkan ke Supabase saat login dan digabung kembali
+(last-write-wins), sehingga mengikuti pemain lintas perangkat. Jika kamu sudah
+menjalankan `schema.sql` sebelum fitur ini ada, jalankan ulang berkas itu (atau
+cukup bagian tabel `progress`) di SQL Editor.
+
 Konten kasus berbayar **tidak** ikut ter-bundle ke browser — diambil dari tabel
 `story_content` Supabase dan dijaga oleh RLS. Fase 1: cukup login. Fase 2
 (paywall): ganti policy RLS ke pengecekan `entitlements` + webhook Stripe
@@ -130,7 +140,9 @@ src/
 │  ├─ content.js        # ambil konten kasus terkunci (RLS-gated, untuk paywall)
 │  ├─ ranks.js          # peringkat detektif + lencana harta (dwibahasa)
 │  ├─ geo.js            # pencocokan jawaban Perburuan Harta (sandi/koordinat)
-│  ├─ save.js           # simpan progres per-kasus
+│  ├─ save.js           # simpan progres per-kasus (localStorage, sumber utama)
+│  ├─ cloud.js          # progres ke Supabase (tabel progress, RLS per user)
+│  ├─ progressSync.js   # sinkron progres lokal <-> cloud (local-first)
 │  └─ intent.js         # ingat tujuan untuk lanjut otomatis setelah login
 ├─ auth/
 │  └─ AuthProvider.jsx  # sesi + signIn/signUp/magic-link/signOut
